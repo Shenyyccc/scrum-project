@@ -11,14 +11,14 @@ import java.util.List;
 @SpringBootTest
 class BackEndApplicationTests {
 
-//    @Autowired
-//    private UserMapper userMapper;
-//    @Test
-//    void contextLoads() {
-//        List<User> users = userMapper.selectList(null);
-//        for (User user : users) {
-//            System.out.println(user);
-//        }
-//    }
+    @Autowired
+    private UserMapper userMapper;
+    @Test
+    void contextLoads() {
+        List<User> users = userMapper.selectList(null);
+        for (User user : users) {
+            System.out.println(user);
+        }
+    }
 
 }

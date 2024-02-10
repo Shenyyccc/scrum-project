@@ -21,7 +21,7 @@ FLOWABLE.APP_URL = {
     /* ACCOUNT URLS */
 
     getAccountUrl: function () {
-        // return FLOWABLE.CONFIG.contextModelerRestRoot + '/rest/account';
+         //return FLOWABLE.CONFIG.contextModelerRestRoot + '/rest/account';
         return FLOWABLE.CONFIG.contextRoot +  '/app/rest/account';
     },
 

@@ -59,7 +59,7 @@ public class ProcessController {
     public Object list(String userId) {
         List<Task> tasks = taskService.createTaskQuery().taskAssignee(userId).orderByTaskCreateTime().desc().list();
         for (Task task : tasks) {
-            System.out.println(task.toString());
+            System.out.println("===>"+task.toString());
         }
         return "task size: " +tasks.size() + " , 第一个：" + tasks.get(0).toString() ;
     }
@@ -70,14 +70,19 @@ public class ProcessController {
      */
     @GetMapping("/apply")
     public String apply(String taskId) {
-        Task task = taskService.createTaskQuery().taskId(taskId).singleResult();
+        Task task = taskService.createTaskQuery().processInstanceId(taskId).singleResult();
+        System.out.println("processInstance:"+taskId);
+        System.out.println("taskId:"+task.getId());
+        System.out.println(taskId.equals(task.getId()));
         if (task == null) {
-            throw new RuntimeException("流程不存在");
+//            throw new RuntimeException("流程不存在");
+            System.out.println(task.toString()+"==>"+taskId);
+            return "找不到流程："+taskId;
         }
         //通过审核
         HashMap<String, Object> map = new HashMap<>();
         map.put("outcome", "通过");
-        taskService.complete(taskId, map);
+        taskService.complete(task.getId(), map);
         return "processed ok!";
     }
 
@@ -100,12 +105,13 @@ public class ProcessController {
     @GetMapping("/processDiagram")
     public void genProcessDiagram(HttpServletResponse httpServletResponse, String processId) throws Exception {
         ProcessInstance pi = runtimeService.createProcessInstanceQuery().processInstanceId(processId).singleResult();
+               // processInstanceId(processId).singleResult();
 
         //流程走完的不显示图
         if (pi == null) {
             return;
         }
-        Task task = taskService.createTaskQuery().processInstanceId(pi.getId()).singleResult();
+        Task task = taskService.createTaskQuery().processInstanceId(processId).singleResult();
         //使用流程实例ID，查询正在执行的执行对象表，返回流程实例对象
         String InstanceId = task.getProcessInstanceId();
         List<Execution> executions = runtimeService
@@ -126,6 +132,7 @@ public class ProcessController {
 
         //获取流程图
         BpmnModel bpmnModel = repositoryService.getBpmnModel(pi.getProcessDefinitionId());
+        System.out.println("==============>"+pi.toString());
         ProcessEngineConfiguration engconf = processEngine.getProcessEngineConfiguration();
         ProcessDiagramGenerator diagramGenerator = engconf.getProcessDiagramGenerator();
         InputStream in = diagramGenerator.generateDiagram(bpmnModel, "png", activityIds, flows, engconf.getActivityFontName(), engconf.getLabelFontName(), engconf.getAnnotationFontName(), engconf.getClassLoader(), 1.0,true);

@@ -4,26 +4,29 @@
              xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI"
              typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath"
              targetNamespace="http://www.flowable.org/processdef">
+
     <process id="Expense" name="ExpenseProcess" isExecutable="true">
         <documentation>报销流程</documentation>
         <startEvent id="start" name="开始"></startEvent>
+
         <userTask id="fillTask" name="出差报销" flowable:assignee="${taskUser}">
             <extensionElements>
                 <modeler:initiator-can-complete xmlns:modeler="http://flowable.org/modeler">
                     <![CDATA[false]]></modeler:initiator-can-complete>
             </extensionElements>
         </userTask>
+
         <exclusiveGateway id="judgeTask"></exclusiveGateway>
         <userTask id="directorTak" name="经理审批">
             <extensionElements>
                 <flowable:taskListener event="create"
-                                       class="com.haiyang.flowable.listener.ManagerTaskHandler"></flowable:taskListener>
+                                       class="com.example.backend.Handler.ManagerTaskHandler"></flowable:taskListener>
             </extensionElements>
         </userTask>
         <userTask id="bossTask" name="老板审批">
             <extensionElements>
                 <flowable:taskListener event="create"
-                                       class="com.haiyang.flowable.listener.BossTaskHandler"></flowable:taskListener>
+                                       class="com.example.backend.Handler.BossTaskHandler"></flowable:taskListener>
             </extensionElements>
         </userTask>
         <endEvent id="end" name="结束"></endEvent>
