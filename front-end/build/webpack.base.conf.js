@@ -47,6 +47,15 @@ module.exports = {
         options: vueLoaderConfig
       },
       {
+        test: /\.less$/,
+        loader: ["vue-loader", "css-loader", "less-loader"]
+      },
+      {
+        test: /\.less$/,
+        loader: 'vue-loader',
+        options: vueLoaderConfig
+      },
+      {
         test: /\.js$/,
         loader: 'babel-loader',
         include: [resolve('src'), resolve('test'), resolve('node_modules/webpack-dev-server/client')]
