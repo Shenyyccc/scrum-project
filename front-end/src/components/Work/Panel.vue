@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1>{{drag?'拖拽中':'拖拽停止'}}</h1>
+    <h1 style="text-align: center">{{drag?'拖拽中':'拖拽停止'}}</h1>
     <div class="container">
       <!--    <div>{{drag?'拖拽中':'拖拽停止'}}</div>-->
       <div>
@@ -48,6 +48,7 @@
 import draggable from 'vuedraggable'
 export default {
   //注册draggable组件
+  name:'Panel',
   components: {
     draggable,
   },
@@ -94,7 +95,9 @@ export default {
 .container{
   display: flex;
 }
-
+Panel{
+  text-color:#ffffff
+}
 /*被拖拽对象的样式*/
 .item {
   padding: 6px;
@@ -102,9 +105,11 @@ export default {
   border: solid 1px #eee;
   margin-bottom: 10px;
   cursor: move;
+  text-align: center;
 }
 /*选中样式*/
 .chosen {
+  text-align: center;
   border: solid 2px #3089dc !important;
   color: red;
 }
