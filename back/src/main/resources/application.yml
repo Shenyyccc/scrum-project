@@ -1,0 +1,23 @@
+server:
+  port: 9090
+
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/bishe?useSSL=false&serverTimezone=GMT%2B8&characterEncoding=utf-8&useUnicode=true
+    username: root
+    password: jyh
+
+#mybatis:
+#  mapper-locations:
+#    classpath:mapper/*.xml
+#  configuration:
+#    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+#    打印日志
+#扫描所有mybatis文件，但好像因为配了mybatis-plus，不再需要了
+
+mybatis-plus:
+  mapper-plus-location:
+    classpath:mapper/*.xml
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
