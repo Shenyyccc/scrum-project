@@ -124,6 +124,7 @@ export default {
         }
       });
     },
+
     to(path){
         this.$router.push(path)
     }

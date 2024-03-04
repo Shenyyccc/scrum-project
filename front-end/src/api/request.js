@@ -12,3 +12,26 @@ axios.defaults.headers.post["Content-Type"] = "application/x-www-form-urlencoded
 export const getMain= ()=> {
   return axios.get(`/hello`)
 }
+
+export const ChangWorkList=(param)=>{
+  return axios.get("/WorkList/Change",{
+    params:{
+      Id:param.paramId,
+      ProcessId:param.paramProcessId,
+    }
+  })
+}
+
+export const getUnstart=()=>{
+  return axios.get("/WorkList/getprocess1");
+}
+
+export const getStarting=()=>{
+  return axios.get("/WorkList/getprocess2");
+}
+
+export const getFinished=()=>{
+  return axios.get("/WorkList/getprocess3");
+}
+
+
