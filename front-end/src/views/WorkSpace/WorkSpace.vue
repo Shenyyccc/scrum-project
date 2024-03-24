@@ -17,28 +17,33 @@
       <!-- 左侧 -->
       <el-aside width="200px">
         <el-menu
+          style="overflow-x: hidden;height: 100%"
           default-active="1-1"
           class="el-menu-vertical-demo"
           @open=""
           @close=""
-          background-color="#545c64"
+          background-color="#373D41"
           text-color="#fff"
           active-text-color="#ffd04b">
+
           <el-submenu index="1">
             <template slot="title">
               <i class="el-icon-location"></i>
-              <span>导航一</span>
+              <span style="font-size: 20px">Panel</span>
             </template>
             <el-menu-item-group>
-              <template slot="title">分组一</template>
+              <template slot="title">first</template>
               <el-menu-item index="1-1">
-                <router-link to="/WorkSpace/WorkList">用户列表</router-link>
+                <router-link to="/WorkSpace/WorkPickup" style="color:#fff;text-decoration: none;">任务认领</router-link>
               </el-menu-item>
               <el-menu-item index="1-2">
-                <router-link to="/WorkSpace/Panel">面板</router-link>
+                <router-link to="/WorkSpace/WorkList" style="color:#fff;text-decoration: none;">用户列表</router-link>
+              </el-menu-item>
+              <el-menu-item index="1-3">
+                <router-link to="/WorkSpace/Panel" style="color:#fff;text-decoration: none">面板</router-link>
               </el-menu-item>
             </el-menu-item-group>
-            <el-menu-item-group title="分组2">
+            <el-menu-item-group title="second">
               <el-menu-item index="1-3">选项3</el-menu-item>
             </el-menu-item-group>
             <el-submenu index="1-4">
@@ -46,10 +51,13 @@
               <el-menu-item index="1-4-1">选项1</el-menu-item>
             </el-submenu>
           </el-submenu>
+
+
           <el-menu-item index="2">
             <i class="el-icon-menu"></i>
-            <span slot="title">导航二</span>
+            <router-link to="/WorkSpace/CreateDepartment" style="color:#fff;text-decoration: none" >面板</router-link>
           </el-menu-item>
+
           <el-menu-item index="3" disabled>
             <i class="el-icon-document"></i>
             <span slot="title">导航三</span>
@@ -59,6 +67,9 @@
             <span slot="title">导航四</span>
           </el-menu-item>
         </el-menu>
+
+
+
 
       </el-aside>
       <!-- 主体 -->
@@ -125,4 +136,7 @@ export default{
 .el-main{
   background-color: #EAEDF1;
 }
+
+
+
 </style>

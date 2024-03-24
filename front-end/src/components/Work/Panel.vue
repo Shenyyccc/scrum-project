@@ -4,12 +4,20 @@
     <div class="container">
       <!--    <div>{{drag?'拖拽中':'拖拽停止'}}</div>-->
       <div class="draggable-container">
-        <h1>未开始</h1>
+        <h1 >未开始</h1>
         <!--使用draggable组件-->
         <draggable id="1" v-model="myArray"  chosenClass="chosen" forceFallback="true" group="people"
-                   animation="300" @start="onStart" @end="onEnd"  style="overflow-y: scroll;height: 450px">
+                   animation="300" @start="onStart" @end="onEnd"  :scroll="true" >
 <!--          <transition-group>-->
-            <div :workId="element.id" class="item" v-for="element in myArray" :key="element.id" style="margin:10px">{{element.workname}}</div>
+<!--            <div :workId="element.id" class="item" v-for="element in myArray" :key="element.id" style="margin:10px;border-radius: 20px">{{element.workname}}</div>-->
+          <Work :workId="element.id" class="item" v-for="element in myArray" :key="element.id" style="">
+            <div slot="work_name">
+              {{element.workname}}
+            </div>
+            <div slot="work_content">
+              {{element.workprocess}}
+            </div>
+          </Work>
 <!--          </transition-group>-->
         </draggable>
       </div>
@@ -19,7 +27,7 @@
         <draggable id='2' v-model="myArray1"  chosenClass="chosen" forceFallback="true" group="people"
                    animation="300" @start="onStart" @end="onEnd" >
 <!--          <transition-group>-->
-            <div :workId="element.id" class="item" v-for="element in myArray1" :key="element.id" style="margin: 10px">{{element.workname}}</div>
+            <div :workId="element.id" class="item" v-for="element in myArray1" :key="element.id" style="margin: 10px;border-radius: 20px">{{element.workname}}</div>
 <!--          </transition-group>-->
         </draggable>
       </div>
@@ -29,7 +37,7 @@
         <draggable id='3' v-model="myArray2"  chosenClass="chosen" forceFallback="true" group="people"
                    animation="300" @start="onStart" @end="onEnd" >
 <!--          <transition-group>-->
-            <div :workId="element.id" class="item" v-for="element in myArray2" :key="element.id" style="margin:10px">{{element.workname}}</div>
+            <div :workId="element.id" class="item" v-for="element in myArray2" :key="element.id" style="margin:10px;border-radius: 20px">{{element.workname}}</div>
 <!--          </transition-group>-->
         </draggable>
       </div>
@@ -43,34 +51,21 @@
 <script>
 //导入draggable组件
 import draggable from 'vuedraggable'
-import {getUnstart,getStarting,getFinished,ChangWorkList} from '@/api/request';
+import {getUnstart,getStarting,getFinished,ChangWorkList} from "@/api/request";
+import Work from "@/components/common/Work.vue";
 export default {
   //注册draggable组件
   components: {
+    Work,
     draggable,
   },
   data() {
     return {
       drag:false,
       //定义要被拖拽对象的数组
-      myArray:[
-        // {people:'cn',id:1,name:'www.itxst.com'},
-        // {people:'cn',id:2,name:'www.baidu.com'},
-        // {people:'cn',id:3,name:'www.taobao.com'},
-        // {people:'us',id:4,name:'www.google.com'}
-      ],
-      myArray1:[
-        // {people:'1',id:5,name:'www.itxst.com'},
-        // {people:'2',id:6,name:'www.baidu.com'},
-        // {people:'3',id:7,name:'www.taobao.com'},
-        // {people:'4',id:8,name:'www.google.com'}
-      ],
-      myArray2:[
-        // {people:'1',id:9,name:'www.itxst.com'},
-        // {people:'2',id:10,name:'www.baidu.com'},
-        // {people:'3',id:11,name:'www.taobao.com'},
-        // {people:'4',id:12,name:'www.google.com'}
-      ]
+      myArray:[],
+      myArray1:[],
+      myArray2:[]
     };
   },
   mounted() {
@@ -84,6 +79,7 @@ export default {
       getUnstart().then(rsp=>{
         this.myArray=rsp.data
       }).catch(err=> this.$message.error('获取Unstarted异常'))
+
     },
     GetStarting(){
       getStarting().then(rsp=>{
@@ -156,7 +152,8 @@ export default {
   width: 400px;
   height: 500px;
   margin: 30px;
-  background: #a4a4a5
+  background: #a4a4a5;
+  border-radius: 30px;
 }
 
 transition div{

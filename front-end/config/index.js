@@ -40,7 +40,8 @@ module.exports = {
     // https://vue-loader.vuejs.org/en/options.html#cachebusting
     cacheBusting: true,
 
-    cssSourceMap: true
+    cssSourceMap: true,
+
   },
 
   build: {
@@ -72,5 +73,14 @@ module.exports = {
     // `npm run build --report`
     // Set to `true` or `false` to always turn it on or off
     bundleAnalyzerReport: process.env.npm_config_report
-  }
+  },
+  // proxyTable: {
+  //   "/api":{ // /url 表示拦截以/url开头的请求路径 【与request.js的url字段要一致】
+  //     target: 'http://127.0.0.1:8080', // http://域名或ip
+  //     changeOrigin: true, // 是否开启跨域
+  //     pathRewrite: { // 重写路径
+  //       '^/url': '' // 把/url变成空字串
+  //     }
+  //   }
+  // }
 }

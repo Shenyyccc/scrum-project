@@ -23,7 +23,10 @@ export default new Router({
       component:()=>import('../views/WorkSpace/WorkSpace.vue'),
       children:[
         {path:'/WorkSpace/WorkList',component:()=>import('../components/Work/WorkList.vue')},
-        {path:'/WorkSpace/Panel',component:()=>import('@/components/Work/Panel.vue')}
+        {path:'/WorkSpace/Panel',component:()=>import('@/components/Work/Panel.vue')},
+        {path:'/WorkSpace/WorkPickup',component:()=>import('@/components/Work/WorkPickup.vue')},
+        {path:'/WorkSpace/CreateDepartment',component:()=>import('@/components/Work/CreateDepartment.vue')}
+
       ]
 
     }

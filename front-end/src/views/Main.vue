@@ -31,22 +31,41 @@
 
     <!--登录    -->
     <el-dialog
-      title="提示"
+      title="登陆页面"
       :visible.sync="dialogVisible_1"
       width="30%">
 
-       <el-form ref="loginForm" :rules="rules" :model="form">
-            <el-form-item label="用户名"  prop="username">
-              <el-input type="text" placeholder="请输入用户名" v-model="form.username"></el-input>
-            </el-form-item>
-            <el-form-item label="密码" prop="password">
-              <el-input type="password" placeholder="请输入密码" v-model="form.password"></el-input>
-            </el-form-item>
-         {{msg}}
-
-         <el-button @click="dialogVisible_1 = false">取 消</el-button>
-         <el-button type="primary" @click="onSubmit('loginForm')" >登录</el-button>
-       </el-form>
+<!--      v-model 主要用于处理表单元素的双向数据绑定，而 v-bind 用于动态地将属性与 Vue 数据绑定-->
+      <el-form :model="user" ref="userLoginForm" :rules="rules">
+        <el-form-item prop="username">
+          <el-input size="medium" style="margin: 10px 0" prefix-icon="el-icon-user" placeholder="请输入用户名" clearable
+                    v-model="user.username"></el-input>
+        </el-form-item>
+        <el-form-item prop="password">
+          <el-input size="medium" style="margin: 10px 0" prefix-icon="el-icon-lock" placeholder="请输入密码" clearable
+                    show-password v-model="user.password"></el-input>
+        </el-form-item>
+        <el-form-item prop="code">
+          <div style="display: flex">
+            <el-input style="margin: 10px 0;flex: 1;"v-model="user.code" prefix-icon="el-icon-loading"
+                      size="medium" placeholder="请输入验证码"></el-input>
+            <div style="flex: 1;">
+              <valid-code @update-value="getCode"></valid-code>
+            </div>
+          </div>
+        </el-form-item>
+        <div style="color: red">{{msg}}</div>
+        <el-form-item style="margin: 10px 0;text-align: right">
+          <el-button type="primary" size="small" autocomplete="off" @click="onSubmit('userLoginForm')" style="width: 100%;margin-bottom: 10px">登录</el-button>
+          <!--           <el-button type="warning" size="small" autocomplete="off">注册</el-button>-->
+        </el-form-item>
+        <el-form-item style="margin-bottom: 0;">
+          <div style="display: flex">
+            <div style="flex:1">还没有账号？<span style="color: #0f9876;cursor: pointer" @click="dialogVisible_1=false;dialogVisible=true">点击注册</span></div>
+            <div style="flex: 1;text-align: right"><span style="color: #0f9876;cursor: pointer">忘记密码</span></div>
+          </div>
+        </el-form-item>
+      </el-form>
 
 <!--      <span slot="footer" class="dialog-footer">-->
 <!--       </span>-->
@@ -54,45 +73,124 @@
 
 
     <!--注册    -->
-<!--    <el-dialog-->
-<!--      title="提示"-->
-<!--      :visible.sync="dialogVisible"-->
-<!--      width="30%"-->
-<!--      :before-close="handleClose">-->
-<!--      <el-tabs v-model="activeName" type="card" @tab-click="">-->
-<!--        <el-tab-pane label="管理员" name="first">-->
-<!--            <el-form>-->
-<!--            <el-form-item label="用户名" prop="username">-->
-<!--              <el-input placeholder="请输入用户名" v-model="form.username"></el-input>-->
-<!--            </el-form-item>-->
-<!--            <el-form-item label="密码" prop="password">-->
-<!--              <el-input placeholder="请输入密码" v-model="form.password"></el-input>-->
-<!--            </el-form-item>-->
-<!--          </el-form>-->
-<!--        </el-tab-pane>-->
-<!--        <el-tab-pane label="用户" name="second">配置管理</el-tab-pane>-->
-<!--      </el-tabs>-->
-<!--      <span slot="footer" class="dialog-footer">-->
-<!--    <el-button @click="dialogVisible = false">取 消</el-button>-->
-<!--    <el-button type="primary" @click="dialogVisible = false">确 定</el-button>-->
-<!--  </span>-->
-<!--    </el-dialog>-->
+    <el-dialog
+      title="注册页面"
+      :visible.sync="dialogVisible"
+      width="30%">
+      <!---注意：model是vue.js中内置的双向数据绑定指令，:model相当于v-bind:model的缩写,而表单的数据对象是model-->
+      <el-form ref="newUser"  :model="newUser" :rules="Rules">
+          <el-form-item  label="用户名: " prop="username" label-width="95px">
+            <el-input placeholder="请输入用户名" v-model="newUser.username"></el-input>
+          </el-form-item>
+
+          <el-form-item label="密码: " prop="password" label-width="95px">
+            <el-input placeholder="请输入密码" v-model="newUser.password"></el-input>
+          </el-form-item>
+
+          <el-form-item label="确认密码: " prop="confirmPassword" label-width="95px">
+            <el-input placeholder="请再次输入密码" v-model="newUser.confirmPassword"></el-input>
+          </el-form-item>
+
+        <el-form-item label="姓名: " prop="name" label-width="95px">
+          <el-input placeholder="请输入姓名" v-model="newUser.name"></el-input>
+        </el-form-item>
+
+          <el-form-item label="手机号: " prop="phone" label-width="95px">
+            <el-input placeholder="请输入手机号" v-model="newUser.phone"></el-input>
+          </el-form-item>
+
+          <el-form-item label="邮箱: " prop="email" label-width="95px">
+            <el-input placeholder="请输入你的邮箱" v-model="newUser.email"></el-input>
+          </el-form-item>
+
+          <el-form-item label="是否为管理员：" label-width="150px" prop="admin">
+            <el-radio-group v-model="newUser.identity">
+              <el-radio :label="1">是</el-radio>
+              <el-radio  :label="2">否</el-radio>
+            </el-radio-group>
+          </el-form-item>
+
+        <el-form-item style="margin-bottom: 0;">
+          <div style="display: flex"></div>
+          <el-button @click="dialogVisible = false">取 消</el-button>
+          <el-button type="primary" @click="onRegister('newUser')">确 定</el-button>
+        </el-form-item>
+
+      </el-form>
+
+    </el-dialog>
+
 
 
   </div>
 </template>
 
+
 <script>
 import register from "../components/common/register.vue";
-import {getMain} from "../api/request";
+import {CheckRegister, Login,Register} from "@/api/request";
+import validCode from "@/components/common/ValidCode.vue";
 
 export default {
   name: "Main",
   components:{
-    register
+    register,
+    validCode
   },
   data() {
+
+    const validateCode = (rule, value, callback) => {
+      if (value === '') {
+        callback(new Error('请输入验证码'));
+      } else if (value.toLowerCase()!==this.code){
+        callback(new Error('验证码错误'))
+      }else{
+        callback();
+      }
+    };
+
+    const validatePass=(rule, value, callback)=>{
+      if (value === '') {
+        callback(new Error('请输入密码'));
+      } else if (value!==this.newUser.password){
+        callback(new Error('两次密码不一致'))
+      }else{
+        callback();
+      }
+    }
+
+    const validateUsername=(rule, value, callback)=>{
+      // const flag=CheckRegister(value)
+      CheckRegister(value).then(rep=>{
+        console.log(rep)
+        if(rep.data===true){
+          callback(new Error('用户名已存在'));
+        }else {
+          callback();
+        }
+      })
+    }
+
     return {
+
+      newUser:{
+        username:'',
+        password:'',
+        confirmPassword:'',
+        name:'',
+        phone:'',
+        email:'',
+        identity:''
+      },
+
+      existUsername:[],
+
+      user:{
+        username:'',
+        password:'',
+        confirmPass:'',
+        code:''
+      },
       form:{
         username:'',
         password:'',
@@ -100,29 +198,70 @@ export default {
       rules:{
         username:[{required:true,message:'用户名不能为空',trigger:'blur'}],
         password:[{required:true,message:'密码不能为空',trigger:'blur'}],
+        // validator用来自定义验证方式
+        code:[{validator:validateCode,trigger:'blur'}],
+      },
+
+      Rules:{
+        username:[{required:true,message:'用户名不能为空',trigger:'blur'},
+                  {validator:validateUsername,trigger: 'blur'}],
+        password:[{required:true,message:'密码不能为空',trigger:'blur'}],
+        confirmPassword: [{validator:validatePass,trigger:'blur'},
+                          {required:true,message:'新密码不能为空',trigger:'blur'}],
+        // confirmPassword: [{required:true,message:'新密码不能为空',trigger:'blur'}],
+        name: [{required:true,message:'姓名不能为空',trigger:'blur'}],
+        phone:[{required:true,message:'手机不能为空',trigger:'blur'}],
+        email: [{required:true,message:'邮件不能为空',trigger:'blur'}],
+        identity: [{required:true,message:'身份不能为空',trigger:'blur'}]
       },
       msg:'',
       dialogVisible:false,
       dialogVisible_1:false,
       value: '',
-      activeName:'first',
     };
   },
+
   methods:{
     onSubmit(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          //this.$http.get("127.0.0.1:8080/hello");
-          //return true;
-          console.log("======>");
-          if(getMain()){
-            this.$router.push('/register');
-          };
+          Login(this.user).then(res=>{
+            console.log(res.data)
+            if (res.data.token!=null) {
+              localStorage.setItem("user",JSON.stringify(res.data))   //把用户信息存到浏览器中
+              sessionStorage.setItem("user",JSON.stringify(res.data))
+              this.dialogVisible_1=false;
+              this.$message.success("登陆成功");
+            }else{
+              this.$message.error("账号或者密码错误")
+            }
+          })
         } else {
           console.log('error submit!!');
           return false;
         }
       });
+    },
+
+    onRegister(formName) {
+      console.log(this.newUser)
+      this.$refs[formName].validate((valid) => {
+        console.log("2.=========="+formName)
+        if (valid) {
+          console.log(JSON.stringify(this.newUser))
+          Register(this.newUser).then(res=>{
+            console.log(res)
+            this.dialogVisible=false;
+          })
+        } else {
+          console.log('error submit!!');
+          return false;
+        }
+      });
+    },
+    getCode(code){
+      console.log(code)
+      this.code=code.toLowerCase()
     },
 
     to(path){

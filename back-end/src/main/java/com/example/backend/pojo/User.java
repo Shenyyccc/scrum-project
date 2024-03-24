@@ -16,8 +16,14 @@ import java.io.Serializable;
 //@ConfigurationProperties(prefix = "user1")
 public class User implements Serializable{
     private static final long serialVersionUID = 3709225449689040689L;
-    private Integer id;
+    private String id;
     private String username;
     private String password;
+    private String name;
+    private String phone;
+    private String email;
+    private String identity;
+    private String avatar;
+
 
 }

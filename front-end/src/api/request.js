@@ -1,20 +1,57 @@
-/* eslint-disable*/
-import axios from 'axios'
+import request from "@/utils/request";
+import axios from "axios";
 
-axios.defaults.timeout = 5000 // 超时时间设置
-axios.defaults.withCredentials = true // 是否跨域
-axios.defaults.baseURL = '/url' // 域名或ip 【注意/url和后面的vue.config.js的/url相匹配】
+export function Login(param) {
+  return request({
+    url: '/login',
+    method: 'post',
+    params: param
+  })
+}
 
-// Content-Type 响应头
-axios.defaults.headers.post["Content-Type"] = "application/x-www-form-urlencoded;charset=UTF-8";
+export function Register(param){
+  return request({
+    url:'/register',
+    method:'post',
+    params:param,
+  })
+}
 
-// 先简单弄下小例子  /statis/api/all 获取所有api请求信息
-export const getMain= ()=> {
-  return axios.get(`/hello`)
+export function CheckRegister(param){
+  return request({
+    url:'/checkUsername',
+    method:'get',
+    params: {
+      username:param
+    },
+  })
+}
+
+
+export function getUnstart(){
+  return request({
+    url:"/WorkList/getprocess1",
+    method:"get"
+  })
+}
+
+export function getStarting(){
+  return request({
+    url:"/WorkList/getprocess2",
+    method:"get"
+  })
+}
+//
+export function getFinished(){
+  return request({
+    url:"/WorkList/getprocess3",
+    method:"get"
+  })
 }
 
 export const ChangWorkList=(param)=>{
-  return axios.get("/WorkList/Change",{
+  return request({
+    url:"/WorkList/Change",
     params:{
       Id:param.paramId,
       ProcessId:param.paramProcessId,
@@ -22,16 +59,22 @@ export const ChangWorkList=(param)=>{
   })
 }
 
-export const getUnstart=()=>{
-  return axios.get("/WorkList/getprocess1");
+/*
+* 部门方法
+* */
+export function createDepart(param){
+  return request({
+    url:"/department/create",
+    method:"get",
+    params:{
+      departmentName:param
+    }
+  })
 }
 
-export const getStarting=()=>{
-  return axios.get("/WorkList/getprocess2");
+export function getDepart(param){
+  return request({
+    url:"/department/get",
+    method:"get",
+  })
 }
-
-export const getFinished=()=>{
-  return axios.get("/WorkList/getprocess3");
-}
-
-
