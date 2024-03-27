@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+//Controller使用@CrossOrigin注解也可以实现跨域问题
 @RestController
 @RequestMapping("/department")
 public class DepartmentController {

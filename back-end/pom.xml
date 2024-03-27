@@ -99,6 +99,14 @@
             <artifactId>flowable-ui-modeler-conf</artifactId>
             <version>${flowable.version}</version>
         </dependency>
+        <!--分页查询插件-->
+        <!-- https://mvnrepository.com/artifact/com.github.pagehelper/pagehelper-spring-boot-starter -->
+        <dependency>
+            <groupId>com.github.pagehelper</groupId>
+            <artifactId>pagehelper-spring-boot-starter</artifactId>
+            <version>1.4.6</version>
+        </dependency>
+
 
 
 

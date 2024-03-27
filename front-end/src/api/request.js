@@ -78,3 +78,18 @@ export function getDepart(param){
     method:"get",
   })
 }
+
+export function getWorks(params){
+  return request({
+    url:"/WorkList/pickup",
+    method:"get",
+    params: {
+      name:params.name,
+      scrib:params.scrib,
+      prio:params.prio,
+      time:params.time,
+      pageSize:params.pageSize,
+      pageNum:params.pageNum,
+    },
+  })
+}

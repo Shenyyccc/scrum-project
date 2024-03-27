@@ -3,13 +3,14 @@ package com.example.backend.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
+import com.example.backend.common.Result;
 import com.example.backend.mapper.WorkMapper;
+import com.example.backend.pojo.DTO.PageParams;
 import com.example.backend.pojo.Work;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -19,6 +20,17 @@ public class WorkListController {
 
     @Autowired
     WorkMapper workMapper;
+
+
+    @GetMapping("/pickup")
+    public Result getWorks(@RequestParam("name")String name,@RequestParam("scrib")String scrib,@RequestParam("prio")String prio,
+                           @RequestParam("time")String time,@RequestParam("pageSize")Integer pageSize,@RequestParam("pageNum")Integer pageNum){
+        PageHelper.startPage(pageNum,pageSize);
+        //只有紧跟在PageHelper.startPage（）方法后的第一个Mybatis的查询（Select）方法会被分页
+        List<Work> works = workMapper.selectList(null);
+        PageInfo<Work> of = PageInfo.of(works);
+        return Result.success(of);
+    }
 
     @GetMapping("/getprocess1")
     public List<Work> getProcess1(){
