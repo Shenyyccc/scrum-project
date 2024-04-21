@@ -31,8 +31,8 @@ public class TokenUtils {
     * */
     public static String getToken(String userId, String password){
         //将userId保存到token作为载荷
-        return JWT.create().withAudience(userId)
-                .withExpiresAt(DateUtil.offsetHour(new Date(),1))
+        return JWT.create().withAudience(userId)//将userID作为token的载荷
+                .withExpiresAt(DateUtil.offsetHour(new Date(),6))
                 .sign(Algorithm.HMAC256(password));
     }
 

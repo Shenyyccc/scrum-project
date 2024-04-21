@@ -10,7 +10,6 @@ import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 @MapperScan(basePackages = "com.example.backend.mapper",sqlSessionFactoryRef = "sqlSessionFactory")
 @SpringBootApplication
 public class BackEndApplication {
-
     public static void main(String[] args) {
         SpringApplication.run(BackEndApplication.class, args);
     }

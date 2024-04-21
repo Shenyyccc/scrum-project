@@ -10,6 +10,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @SpringBootTest
@@ -37,12 +38,23 @@ class BackEndApplicationTests {
 
 //        Work work = workMapper.selectById(1);
 //        System.out.println(work);
+//        List<String> prework=new ArrayList<>();
+//        prework.add("2");
+//        prework.add("3");
+//        prework.add("4");
+//        prework.add("5");
         Work work = workMapper.selectById(1);
-        UpdateWrapper<Work> wrapper = new UpdateWrapper<>();
-        wrapper.eq("id",1);
-        work.setWorkprocess(2);
+        System.out.println("===============>"+work.getWorkname()+"   "+work.getWorkscrib());
+        List<String> preworks = work.getPreworks();
+        for (String prework : preworks) {
+            System.out.println("===============>"+prework);
+        }
+//        UpdateWrapper<Work> wrapper = new UpdateWrapper<>();
+//        wrapper.eq("id",1);
+//        work.setWorkprocess(2);
+//        work.setPreworks(prework);
 
-        workMapper.update(work,wrapper);
+//        workMapper.update(work,wrapper);
 
     }
 

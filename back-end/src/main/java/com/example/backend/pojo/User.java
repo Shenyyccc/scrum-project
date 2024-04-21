@@ -14,16 +14,21 @@ import java.io.Serializable;
 //可以通过配置文件注入值
 //@Component
 //@ConfigurationProperties(prefix = "user1")
-public class User implements Serializable{
-    private static final long serialVersionUID = 3709225449689040689L;
+public class User{
     private String id;
     private String username;
     private String password;
     private String name;
     private String phone;
     private String email;
-    private String identity;
+    private Integer identity=0;
     private String avatar;
+    private String companyid;
+
+    private String company;
+    private String departmentid;
+
+    //@Transient：表示某个属性不应当被持久化到数据库中。换句话说，标记了@Transient的字段在数据库的表结构中不会有对应的列。相当于VO
 
 
 }

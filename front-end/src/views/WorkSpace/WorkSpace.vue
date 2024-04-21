@@ -5,7 +5,7 @@
     <el-header>
       <div>
         <img src="" alt="">
-        <span>电商后台管理系统</span>
+        <span></span>
       </div>
       <!-- 退出按钮 -->
       <el-button type="info" @click="">退出</el-button>
@@ -55,16 +55,19 @@
 
           <el-menu-item index="2">
             <i class="el-icon-menu"></i>
-            <router-link to="/WorkSpace/CreateDepartment" style="color:#fff;text-decoration: none" >面板</router-link>
+            <router-link to="" style="color:#fff;text-decoration: none" >面板</router-link>
           </el-menu-item>
 
-          <el-menu-item index="3" disabled>
+          <el-menu-item index="3">
             <i class="el-icon-document"></i>
-            <span slot="title">导航三</span>
+            <router-link to="/WorkSpace/PersonInformation" style="color:#fff;text-decoration: none" >Person Information</router-link>
           </el-menu-item>
+
           <el-menu-item index="4">
             <i class="el-icon-setting"></i>
-            <span slot="title">导航四</span>
+            <span slot="title">
+              <router-link to="/WorkSpace/FormDesign" style="color:#fff;text-decoration: none" >表单设计</router-link>
+            </span>
           </el-menu-item>
         </el-menu>
 
@@ -85,6 +88,8 @@
 export default{
   name:'WorkSpace',
 
+
+
   methods:{
     // 退出操作
     logout(){
@@ -93,6 +98,8 @@ export default{
       //  将登录页面转入到登录界面
       this.$router.push('/login')
     }
+  },
+  mounted() {
   }
 }
 </script>

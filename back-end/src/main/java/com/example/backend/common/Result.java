@@ -1,5 +1,6 @@
 package com.example.backend.common;
 
+import com.example.backend.Constants.WebEnum;
 import lombok.Data;
 
 /*
@@ -32,7 +33,12 @@ public class Result {
         result.setCode("406");
         result.setMessage(msg);
         return result;
+    }
 
-
+    public static Result error(String msg,String code){
+        Result result = new Result();
+        result.setCode(WebEnum.CODE_402);
+        result.setMessage(msg);
+        return result;
     }
 }

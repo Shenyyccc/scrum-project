@@ -4,10 +4,9 @@ import liquibase.pro.packaged.I;
 
 public interface Identity {
 
-    static  Integer DEPARTMENT_EMPLOYEE=1;
-
+    static Integer VISITOR=0;
+    static Integer ADMINISTRATOR=1;
     static Integer DEPARTMENT_MANAGER=2;
-
-    static Integer ADMINISTRATOR=3;
+    static  Integer DEPARTMENT_EMPLOYEE=3;
 
 }

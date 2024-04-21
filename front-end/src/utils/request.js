@@ -1,8 +1,9 @@
 import axios from 'axios'
-import ElementUI from "element-ui";
+import ElementUI, {MessageBox} from "element-ui";
+import router from "@/router";
 
 const request = axios.create({
-  baseURL: 'http://localhost:8080',  // 注意！！ 这里是全局统一加上了 '/api' 前缀，也就是说所有接口都会加上'/api'前缀在，页面里面写接口的时候就不要加 '/api'了，否则会出现2个'/api'，类似 '/api/api/user'这样的报错，切记！！！
+  baseURL: 'http://localhost:8080',
   timeout: 5000
 })
 
@@ -10,13 +11,15 @@ const request = axios.create({
 // 可以自请求发送前对请求做一些处理
 // 比如统一加token，对请求参数统一加密
 request.interceptors.request.use(config => {
+  console.log("request========>")
   config.headers['Content-Type'] = 'application/json;charset=utf-8';
   // config.headers['Content-Type'] = 'application/json';
-  let user = localStorage.getItem("user")?JSON.parse(localStorage.getItem("user")):{}
-  if(user){
+  let user = sessionStorage.getItem("user")?JSON.parse(sessionStorage.getItem("user")):{}
+  // console.log(user)
+  if(user!={}){
     config.headers['token'] = user.token;  // 设置请求头
-    console.log("request.interceptors.request中的token:"+user.token)
   }
+
 
   return config
 }, error => {
@@ -29,7 +32,7 @@ request.interceptors.response.use(
   response => {
     let res = response;
     console.log("respond========>")
-    console.log(res.data);
+    // console.log(res);
     //如果是返回的文件
     if (response.config.responseType === 'blob') {
       return res
@@ -40,17 +43,34 @@ request.interceptors.response.use(
     }
 
     //token权限不足时给出提示
-    if(res.code==='401'){
+    if(res.data.code==='401'){
       ElementUI.Message({
-        message:res.msg,
+        message:res.data.message,
         type:'error'
       });
+    }
+
+    if(res.data.code==='406'){
+      // ElementUI.Message({
+      //   message:res.data.message,
+      //   type:'error'
+      // });
+      MessageBox.alert(response.data.message, "登录失效", {
+        confirmButtonText: "跳转登录页面",
+        callback: action => {
+          // 跳转登录页
+          window.location.href = "/";
+        }
+      });
+      // sessionStorage.removeItem('user')
+      return null;
     }
 
     return res;
   },
   error => {
     console.log('err' + error) // for debug
+    // sessionStorage.removeItem('user')
     return Promise.reject(error)
   }
 )

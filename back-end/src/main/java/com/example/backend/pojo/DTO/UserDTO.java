@@ -10,6 +10,12 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class UserDTO {
 
-    String role;
+    String userId;
+    String username;
+    String name;
+    String avatar;
+    Integer identity;
     String token;
+    String company;
+    String companyid;
 }

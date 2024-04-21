@@ -8,5 +8,7 @@ public interface WebEnum {
     String CODE_400="400";  //参数错误
     String CODE_600="600";
 
+    String CODE_402="402";//账号密码错误
+
 
 }
