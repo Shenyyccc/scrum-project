@@ -76,6 +76,11 @@ public class DepartmentController {
         return Result.success(listDTO);
     }
 
+    @GetMapping("/getIndividualDepart")
+    public Result getIndividualDepart(String id){
+        return Result.success(departmentMapper.selectById(id));
+    }
+
     @GetMapping("/getNoDepart")
     public Result getNoDepart(@RequestParam("companyId")String companyid,@RequestParam("research")String research){
 

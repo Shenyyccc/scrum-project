@@ -47,6 +47,7 @@ public class UserService {
             userDTO.setUsername(one.getUsername());
             userDTO.setCompanyid(one.getCompanyid());
             userDTO.setCompany(companyMapper.selectById(one.getCompanyid()).getName());
+            userDTO.setDepartmentid(one.getDepartmentid());
             if(one.getCompanyid()!=null){
                 Company company = companyMapper.selectById(one.getCompanyid());
                 userDTO.setCompany(company.getName());

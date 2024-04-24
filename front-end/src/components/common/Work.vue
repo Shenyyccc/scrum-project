@@ -3,13 +3,12 @@
 <!--      <slot name="work_name"></slot>-->
 <!--      <slot name="work_content"></slot>-->
       <el-card shadow="hover" style="width: 400px;border-radius: 20px;" :body-style="{paddingTop:'0px'}">
-
         <div  class="" style="display: flex;height: 30px;padding-top: 10px" >
           <div style="flex: 10;width: 300px;height: 30px;font-size: 22px;">
-            <slot name="work_name" style="height: 50%;padding: 0px" ></slot>
+            <slot name="work_name" style="height: 50%;padding: 0px;" ></slot>
           </div>
           <div style="margin-right: 0px;width: 30px;flex: 2;height: 3px;padding: 0px">
-            <el-button round type="primary"  style="font-size: 13px;padding: 8px" @click="">领取任务</el-button>
+            <el-button round type="text" style="font-size: 13px;padding: 8px" @click="pickUp">Pick Up</el-button>
           </div>
         </div>
 
@@ -20,7 +19,7 @@
           <slot name="work_content" style="font-size: 14px;margin-bottom: 18px;text-align: left"></slot>
         </div>
         <div style="display: flex;height: 10px;font-size: 12px;">
-          <div> 期限：7天</div>
+          <div> expiry：<slot name="work_time" style="height: 50%;padding: 0px" ></slot>day</div>
         </div>
       </el-card>
 
@@ -30,6 +29,14 @@
 <script>
 export default {
   name: "Work",
+  props:[
+    "id",
+  ],
+  methods:{
+    pickUp(){
+      this.$emit("pickUpTask",this.id);
+    }
+  }
 }
 </script>
 

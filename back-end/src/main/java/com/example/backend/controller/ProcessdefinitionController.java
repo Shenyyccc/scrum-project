@@ -75,6 +75,9 @@ public class ProcessdefinitionController {
 
     @GetMapping("/deleteWorkflowTemplate")
     public Result deleteWorkflowTemplate(String id){
+        QueryWrapper<Processdefinitiontask> wrapper=new QueryWrapper<>();
+        wrapper.eq("definitionid",id);
+        definitiontaskMapper.delete(wrapper);
         return Result.success(definitionMapper.deleteById(id));
     }
 

@@ -115,6 +115,16 @@ export function getDepart(param){
   })
 }
 
+export function getIndividualDepart(param){
+  return request({
+    url:"/department/getIndividualDepart",
+    method:"get",
+    params:{
+      id:param,
+    }
+  })
+}
+
 export function getNoDepart(params){
   return request({
     url:"/department/getNoDepart",
@@ -171,15 +181,15 @@ export function setManager(params){
   })
 }
 
-export function getWorks(params){
+export function getTasks(params){
   return request({
-    url:"/WorkList/pickup",
+    url:"/getDepartTask",
     method:"get",
     params: {
       name:params.name,
       scrib:params.scrib,
-      prio:params.prio,
       time:params.time,
+      departmentid:params.departmentid,
       pageSize:params.pageSize,
       pageNum:params.pageNum,
     },
@@ -316,5 +326,47 @@ export function deleteWorkflowTemplate(params){
     params: {
       id:params,
     },
+  })
+}
+
+
+export function deployDefinition(params){
+  return request({
+    url:'/deploy',
+    method:'get',
+    params: {
+      id:params,
+    },
+  })
+}
+
+export function pickUpTask(params){
+  return request({
+    url:'/pickUp',
+    method:'get',
+    params:{
+      taskid:params.taskid,
+      userid:params.userid,
+    }
+  })
+}
+
+export function getRunningTask(params){
+  return request({
+    url:'getRunningTask',
+    method:'get',
+    params:{
+      userid:params
+    }
+  })
+}
+
+export function finishTask(params){
+  return request({
+    url:'finishTask',
+    method:'get',
+    params:{
+      id:params
+    }
   })
 }

@@ -53,7 +53,7 @@
 </template>
 
 <script>
-import {deleteWorkflowTemplate, getWorkflowTemplate} from "@/api/request";
+import {deleteWorkflowTemplate, deployDefinition, getWorkflowTemplate} from "@/api/request";
 
 export default {
   name: "WorkflowTemplate",
@@ -74,6 +74,7 @@ export default {
     getWorkFlowTemplate(){
       console.log(this.input.search)
         getWorkflowTemplate(this.input).then(rsp=>{
+          console.log(rsp.data.data)
           this.definitionData=rsp.data.data.list;
           this.total=rsp.data.data.total
         })
@@ -82,7 +83,9 @@ export default {
       this.getWorkFlowTemplate()
     },
     deploy(param){
-        console.log(param)
+        deployDefinition(param.id).then(rsp=>{
+            console.log(rsp.data)
+        })
     },
     handleDelete(param){
       console.log(this.definitionData[param])

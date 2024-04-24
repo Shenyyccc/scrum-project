@@ -225,7 +225,7 @@ export default {
         name:'',
         phone:'',
         email:'',
-        identity:'0',
+        identity:0,
         company:'',
       },
 
@@ -364,6 +364,7 @@ export default {
     },
     handleClose_register(){
       this.newUser={};
+      this.newUser.identity=0;
       this.dialogVisible_register=false
       //clear验证信息
       this.$nextTick(() => {

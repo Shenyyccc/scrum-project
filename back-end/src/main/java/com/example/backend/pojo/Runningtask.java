@@ -14,11 +14,11 @@ import javax.persistence.Column;
 import java.util.Date;
 import java.util.List;
 
-@Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Data
 @TableName(autoResultMap = true)
-public class Processdefinitiontask {
+public class Runningtask {
 
     private String id;
     private String taskname;
@@ -29,14 +29,25 @@ public class Processdefinitiontask {
     @Column(name="taskkey")
     private Integer taskkey;
 
+    private Integer progress;
+
     @JsonFormat(timezone = "GMT+8",pattern = "yyyy-MM-dd HH:mm:ss")
     @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
     private Date createtime;
 
-    private String definitionid;
+    @JsonFormat(timezone = "GMT+8",pattern = "yyyy-MM-dd HH:mm:ss")
+    @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
+    private Date starttime;
+
+    @JsonFormat(timezone = "GMT+8",pattern = "yyyy-MM-dd HH:mm:ss")
+    @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
+    private Date endtime;
+
+    private String runningworkflowid;
 
     @TableField(jdbcType = JdbcType.VARCHAR, typeHandler = ListToStringHandler.class)
     private List<Integer> pretaskkey;
 
+    private String userid;
 
 }

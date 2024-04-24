@@ -1,27 +1,21 @@
 package com.example.backend.pojo.DTO;
 
+import com.example.backend.pojo.Runningtask;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.List;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class PageParams {
-    String name;
-    String scrib;
-    String prio;
-    String time;
-    Integer pageSize;
-    Integer pageNum;
-    /*
-    * input:{
-        name:'',
-        scrib:'',
-        prio:'',
-        time:'',
-        pageSize:9,
-        pageNum:1,
-      },
-    * */
+    private Integer totalPages;
+    private Integer pageNo;
+    private Integer pageSize;
+    private Integer totalSize;
+    private Integer dataNum;
+    private List<Runningtask> list;
+
 }

@@ -1,46 +1,71 @@
 <template>
   <div>
-    <h1>{{drag?'拖拽中':'拖拽停止'}}</h1>
+    <div style="text-align: center;font-size: 20px">
+      <h1 style="align-content: center">Panel</h1>
+
+    </div>
     <div class="container">
+      <div style="">
+        <div v-for="(group,index) in groupedData" :key="index" style="display: flex;height: 160px;margin-left: 5px">
+            <selected-task v-for="(task,index) in group" :key="index" :deadline="task.deadline"  style="margin-left: 10px" :id="task.id"  @finishTask="finish" >
+              <div slot="task_name">
+                {{task.taskname}}
+              </div>
+              <div slot="task_content">
+                {{task.taskscrib}}
+              </div>
+            </selected-task>
+        </div>
+      </div>
+
+
       <!--    <div>{{drag?'拖拽中':'拖拽停止'}}</div>-->
-      <div class="draggable-container">
-        <h1 >未开始</h1>
-        <!--使用draggable组件-->
-        <draggable id="1" v-model="myArray"  chosenClass="chosen" forceFallback="true" group="people"
-                   animation="300" @start="onStart" @end="onEnd"  :scroll="true" >
-<!--          <transition-group>-->
-<!--            <div :workId="element.id" class="item" v-for="element in myArray" :key="element.id" style="margin:10px;border-radius: 20px">{{element.workname}}</div>-->
-          <Work :workId="element.id" class="item" v-for="element in myArray" :key="element.id" style="">
-            <div slot="work_name">
-              {{element.workname}}
-            </div>
-            <div slot="work_content">
-              {{element.workprocess}}
-            </div>
-          </Work>
-<!--          </transition-group>-->
-        </draggable>
-      </div>
+<!--      <div class="draggable-container">-->
+<!--        <h1 >未开始</h1>-->
+<!--        &lt;!&ndash;使用draggable组件&ndash;&gt;-->
+<!--        <draggable id="1" v-model="myArray"  chosenClass="chosen" forceFallback="true" group="people"-->
+<!--                   animation="300" @start="onStart" @end="onEnd"  :scroll="true" >-->
+<!--&lt;!&ndash;          <transition-group>&ndash;&gt;-->
+<!--&lt;!&ndash;            <div :workId="element.id" class="item" v-for="element in myArray" :key="element.id" style="margin:10px;border-radius: 20px">{{element.workname}}</div>&ndash;&gt;-->
+<!--&lt;!&ndash;          <Work :workId="element.id" class="item" v-for="element in myArray" :key="element.id" style="">&ndash;&gt;-->
+<!--&lt;!&ndash;            <div slot="work_name">&ndash;&gt;-->
+<!--&lt;!&ndash;              {{element.workname}}&ndash;&gt;-->
+<!--&lt;!&ndash;            </div>&ndash;&gt;-->
+<!--&lt;!&ndash;            <div slot="work_content">&ndash;&gt;-->
+<!--&lt;!&ndash;              {{element.workprocess}}&ndash;&gt;-->
+<!--&lt;!&ndash;            </div>&ndash;&gt;-->
+<!--&lt;!&ndash;          </Work>&ndash;&gt;-->
+<!--&lt;!&ndash;          </transition-group>&ndash;&gt;-->
+<!--          <selected-task v-for="element in Array" :key="element.id" :deadline="deadline">-->
+<!--            <div slot="task_name">-->
+<!--              {{element.taskname}}-->
+<!--            </div>-->
+<!--&lt;!&ndash;            <div slot="task_scrib">&ndash;&gt;-->
+<!--&lt;!&ndash;              {{element.taskscrib}}&ndash;&gt;-->
+<!--&lt;!&ndash;            </div>&ndash;&gt;-->
+<!--          </selected-task>-->
+<!--        </draggable>-->
+<!--      </div>-->
 
-      <div class="draggable-container" >
-        <h1>进行中</h1>
-        <draggable id='2' v-model="myArray1"  chosenClass="chosen" forceFallback="true" group="people"
-                   animation="300" @start="onStart" @end="onEnd" >
-<!--          <transition-group>-->
-            <div :workId="element.id" class="item" v-for="element in myArray1" :key="element.id" style="margin: 10px;border-radius: 20px">{{element.workname}}</div>
-<!--          </transition-group>-->
-        </draggable>
-      </div>
+<!--      <div class="draggable-container" >-->
+<!--        <h1>进行中</h1>-->
+<!--        <draggable id='2' v-model="myArray1"  chosenClass="chosen" forceFallback="true" group="people"-->
+<!--                   animation="300" @start="onStart" @end="onEnd" >-->
+<!--&lt;!&ndash;          <transition-group>&ndash;&gt;-->
+<!--            <div :workId="element.id" class="item" v-for="element in myArray1" :key="element.id" style="margin: 10px;border-radius: 20px">{{element.workname}}</div>-->
+<!--&lt;!&ndash;          </transition-group>&ndash;&gt;-->
+<!--        </draggable>-->
+<!--      </div>-->
 
-      <div class="draggable-container">
-        <h1>已完成</h1>
-        <draggable id='3' v-model="myArray2"  chosenClass="chosen" forceFallback="true" group="people"
-                   animation="300" @start="onStart" @end="onEnd" >
-<!--          <transition-group>-->
-            <div :workId="element.id" class="item" v-for="element in myArray2" :key="element.id" style="margin:10px;border-radius: 20px">{{element.workname}}</div>
-<!--          </transition-group>-->
-        </draggable>
-      </div>
+<!--      <div class="draggable-container">-->
+<!--        <h1>已完成</h1>-->
+<!--        <draggable id='3' v-model="myArray2"  chosenClass="chosen" forceFallback="true" group="people"-->
+<!--                   animation="300" @start="onStart" @end="onEnd" >-->
+<!--&lt;!&ndash;          <transition-group>&ndash;&gt;-->
+<!--            <div :workId="element.id" class="item" v-for="element in myArray2" :key="element.id" style="margin:10px;border-radius: 20px">{{element.workname}}</div>-->
+<!--&lt;!&ndash;          </transition-group>&ndash;&gt;-->
+<!--        </draggable>-->
+<!--      </div>-->
     </div>
 
   </div>
@@ -51,32 +76,67 @@
 <script>
 //导入draggable组件
 import draggable from 'vuedraggable'
-import {getUnstart,getStarting,getFinished,ChangWorkList} from "@/api/request";
+import {getUnstart, getStarting, getFinished, ChangWorkList, getRunningTask, finishTask} from "@/api/request";
 import Work from "@/components/common/Work.vue";
+import selectedTask from "@/components/common/selectedTask.vue";
 export default {
   //注册draggable组件
   components: {
     Work,
     draggable,
+    selectedTask,
   },
   data() {
     return {
-      drag:false,
-      //定义要被拖拽对象的数组
-      myArray:[],
-      myArray1:[],
-      myArray2:[]
+      // drag:false,
+      // //定义要被拖拽对象的数组
+      // deadline: Date.now() + (new Date().setHours(23, 59, 59) - Date.now()),
+      // myArray:[],
+      // myArray1:[],
+      // myArray2:[],
+      Task:[],
+      itemsPerGroup: 4,
     };
   },
+  computed:{
+    groupedData() {
+      const groups = [];
+      for (let i = 0; i < this.Task.length; i += this.itemsPerGroup) {
+        groups.push(this.Task.slice(i, i + this.itemsPerGroup));
+      }
+      console.log(groups)
+      return groups;
+    },
+  },
   mounted() {
-    this.GetUnstart();
-    this.GetStarting();
-    this.GetFinished();
+    // this.GetUnstart();
+    // this.GetStarting();
+    // this.GetFinished();
+    this.getRuningTask();
+
   },
   methods: {
+    getRuningTask(){
+      getRunningTask(JSON.parse(sessionStorage.getItem("user")).userId).then(rsp=>{
+        this.Task=rsp.data.data;
+        for(let i=0;i<this.Task.length;i++){
+          this.Task[i].deadline= Date.now() + (new Date(this.Task[i].endtime)- Date.now())
+        }
+        console.log(this.Task)
+      })
+    },
+    finish(data){
+      console.log(data)
+      finishTask(data).then(rsp=>{
+        this.$message.success("finish this task successfully!");
+        this.getRuningTask();
+      })
+    },
+
     //获取数组
     GetUnstart(){
       getUnstart().then(rsp=>{
+        console.log(rsp.data)
         this.myArray=rsp.data
       }).catch(err=> this.$message.error('获取Unstarted异常'))
 
@@ -123,6 +183,7 @@ export default {
       console.log(`To list: ${toList}`);
     },
   },
+
 };
 
 </script>

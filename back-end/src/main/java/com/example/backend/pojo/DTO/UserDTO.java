@@ -18,4 +18,6 @@ public class UserDTO {
     String token;
     String company;
     String companyid;
+
+    String departmentid;
 }
