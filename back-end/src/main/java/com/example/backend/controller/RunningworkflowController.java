@@ -25,6 +25,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 @RestController
@@ -93,7 +95,10 @@ public class RunningworkflowController {
         }
 //        PageHelper.startPage(pageNum,pageSize);
         List<Runningtask>list = runningtaskMapper.selectList(queryWrapper);
-        for(Runningtask task:list){
+        Iterator<Runningtask> iterator = list.iterator();
+        List<Runningtask> toRemove=new ArrayList<>();
+        while (iterator.hasNext()) {
+            Runningtask task = iterator.next();
             List<Integer> pretaskkey = task.getPretaskkey();
             Boolean flag=true;
             for(Integer key:pretaskkey){
@@ -107,9 +112,11 @@ public class RunningworkflowController {
                 }
             }
             if(!flag){
-                list.remove(task);
+                toRemove.add(task);
             }
         }
+
+        list.removeAll(toRemove);
         PageParams page = paginationService.getPage(list, pageNum, pageSize);
         System.out.println(page);
 
