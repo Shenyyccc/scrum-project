@@ -62,7 +62,7 @@ public class LoginController {
         try {
             userDTO = userService.login(user);
         } catch (Exception e) {
-            return Result.error(e.getMessage(), WebEnum.CODE_402);
+            return Result.error(e.getMessage(), WebEnum.CODE_401);
         }
 
         return Result.success(userDTO);
@@ -152,6 +152,11 @@ public class LoginController {
         }
 
         return Result.success(userDTO1);
+    }
+
+    @PostMapping("/updatePass")
+    public Result updatePass(@RequestBody User user){
+        return Result.success(userMapper.updateById(user));
     }
 
 

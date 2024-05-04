@@ -12,7 +12,7 @@
             <el-input v-model="input.scrib" style="width: 250px;margin-right: 10px" placeholder="Please input the task content"></el-input>
             <el-input v-model="input.time" style="width: 250px;margin-right: 10px" placeholder="Please input expiry time"></el-input>
             <el-button type="warning" style="margin-right: 5px" @click="clear">Clear</el-button>
-            <el-button type="primary" style="margin-right: 15px" @click="getTasks">Research</el-button>
+            <el-button type="primary" style="margin-right: 15px" @click="getTasks">Search</el-button>
 
           </div>
 
@@ -23,12 +23,14 @@
         <el-divider></el-divider>
         <div>
           <div v-for="(group, index) in groupedData" :key="index" style="display: flex">
-            <Work v-for="(work,index) in group" :key="index" style="margin-bottom: 10px;width: 400px;margin-right: 10px" v-if="index<3" @pickUpTask="pickUp" :id="work.id">
-              <div slot="work_name">
+            <Work v-for="(work,index) in group" :key="index" style="margin-bottom: 10px;width: 400px;margin-right: 10px" v-if="index<3" @pickUpTask="pickUp" :id="work.id"
+                :manager="user.identity" @Assign="assign" :depart-id="user.departmentid">
+              <div slot="work_name" style="font-family: sans-serif;">
                 {{work.taskname}}
               </div>
               <div slot="work_content">
-                {{work.taskscrib}}
+                <span style="font-weight: bold">DESCRIPTION:&nbsp;</span>
+                <span style="color: #a4a4a5">{{work.taskscrib}}</span>
               </div>
               <span slot="work_time">
                 {{work.expiretime}}
@@ -51,7 +53,41 @@
       </el-footer>
     </el-container>
 
+    <el-drawer
+      title="Assign Task"
+      :visible.sync="dialogVisible">
+      <div>
+        <el-table
+          :data="memberData"
+          style="width: 100%"
+          empty-text="No Data">
+          <el-table-column
+            prop="username"
+            label="Username"
+            width="180">
+          </el-table-column>
+          <el-table-column
+            prop="name"
+            label="Name"
+            width="180">
+          </el-table-column>
+          <el-table-column
+            label="Operation">
+            <template v-slot:default="scope" style="display: flex">
+              <el-popconfirm confirm-button-text='confirm' class="ml-5"
+                             cancel-button-text='think again'
+                             icon="el-icon-info"
+                             icon-color="red"
+                             title="Are you sure？"
+                             @confirm="handleAssign(scope.row.id)">
+                <el-button type="text" slot="reference" size="mini" icon="el-icon-circle-plus">assign</el-button>
+              </el-popconfirm>
 
+            </template>
+          </el-table-column>
+        </el-table>
+      </div>
+    </el-drawer>
 
 
   </div>
@@ -60,7 +96,7 @@
 
 <script>
 import Work from "@/components/common/Work.vue";
-import {getIndividualDepart, getTasks, getWorks, pickUpTask} from "@/api/request";
+import {getDepartMember, getIndividualDepart, getTasks, getWorks, pickUpTask} from "@/api/request";
 
 export default {
   name: "WorkPickup",
@@ -80,8 +116,10 @@ export default {
       depart:{},
       itemsPerGroup: 3,
       total:0,
-      dialogVisible:'',
+      dialogVisible:false,
       user:JSON.parse(sessionStorage.getItem('user')),
+      memberData:[],
+      currentTaskId:'',
 
     }
   },
@@ -99,7 +137,7 @@ export default {
   mounted() {
     this.getDepart();
     this.getTasks();
-  },
+    },
   methods:{
     getTasks(){
       this.input.departmentid=this.user.departmentid;
@@ -135,6 +173,23 @@ export default {
       let params={userid,taskid};
       pickUpTask(params).then(rsp=>{
         console.log(rsp.data.data)
+        this.getTasks();
+      })
+    },
+    assign(param1,param2){
+      this.dialogVisible=true;
+      console.log(param1,param2)
+      this.currentTaskId=param2
+      getDepartMember({departId:param1,input:''}).then(rsp=>{
+        console.log(rsp.data.data)
+        this.memberData=rsp.data.data;
+      })
+    },
+    handleAssign(param){
+      console.log(param)
+      pickUpTask({userid:param,taskid:this.currentTaskId}).then(rsp=>{
+        console.log(rsp.data.data)
+        this.$message.success("Assign successfully")
         this.getTasks();
       })
     }

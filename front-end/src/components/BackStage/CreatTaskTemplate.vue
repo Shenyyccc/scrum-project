@@ -35,7 +35,6 @@
                              @confirm="handleDelete(scope.row.id)">
                 <el-button type="text" slot="reference" size="mini" icon="el-icon-delete">delete</el-button>
               </el-popconfirm>
-
             </template>
           </el-table-column>
         </el-table>

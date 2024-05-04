@@ -72,7 +72,7 @@ public class JwtInterceptor implements HandlerInterceptor {
         } catch (JWTDecodeException j) {
             throw new JwtAuthenticationException("用户不存在，请重新登录");
         }
-//
+
 //        User user = userService.getById(userId);
 //        if (one== null) {
 //            throw new ServiceException(WebEnum.CODE_401);

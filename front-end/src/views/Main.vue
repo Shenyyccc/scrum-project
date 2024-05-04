@@ -76,7 +76,7 @@
         <el-form-item style="margin: 10px 0;text-align: right">
           <el-button type="primary" size="small" autocomplete="off" @click="onSubmit('userLoginForm')" style="width: 100%;margin-bottom: 10px">LOG IN</el-button>
         </el-form-item>
-        <el-form-item style="margin-bottom: 0;" >
+        <el-form-item style="margin-bottom: 20px;" >
           <div style="display: flex;">
             <div style="flex:1">Don't have an account yet？</div>
 <!--            <div style="flex: 1;text-align: right"><span style="color: #0f9876;cursor: pointer">Lost Password</span></div>-->
@@ -84,14 +84,16 @@
               Click to register
             </div>
           </div>
-<!--          <div style="display: flex;margin-top: 0px">-->
-<!--               <span style="color: #0f9876;cursor: pointer;margin-left: 18px" @click="dialogVisible_login=false;dialogVisible_register=true">Click to register</span>-->
-<!--          </div>-->
+          <div style="margin-bottom: 10px;display: flex">
+            <div style="flex: 1">
+            </div>
+            <div style="color: #0f9876;cursor: pointer;margin-left: 50px;margin-top:-15px;flex: 1" @click="dialogVisible_login=false;dialogVisible_retrieve=true">
+              Retrieve password
+            </div>
+          </div>
         </el-form-item>
       </el-form>
 
-<!--      <span slot="footer" class="dialog-footer">-->
-<!--       </span>-->
     </el-dialog>
 
 
@@ -150,6 +152,69 @@
     </el-dialog>
 
 
+    <!--找回密码-->
+    <el-dialog
+      title="Retrieve password"
+      :visible.sync="dialogVisible_retrieve"
+      width="30%"
+      :before-close="handleClose_retrieve">
+
+      <div>
+        <el-steps :active="active" finish-status="success" align-center>
+          <el-step title="Validate phone number"></el-step>
+          <el-step title="Confirm new Password"></el-step>
+        </el-steps>
+      </div>
+      <!--步骤1-->
+      <div v-if="active===0">
+        <el-form :model="validatePhone" ref="validatePhone" :rules="rule_retrieve">
+          <el-form-item prop="phone">
+            <el-input size="medium" style="margin: 10px 0" prefix-icon="el-icon-phone" placeholder="Please enter your phone number" clearable
+                      v-model="validatePhone.phone"></el-input>
+          </el-form-item>
+          <el-form-item prop="code">
+            <div style="display: flex">
+              <el-input style="margin: 10px 0;flex:2" v-model="validatePhone.code" prefix-icon="el-icon-refresh-right"
+                        placeholder="Please enter the verification code"></el-input>
+              <div style="flex:1;line-height: 60px">
+                <el-button type="text" @click="sendSms">Get Validation Code</el-button>
+              </div>
+            </div>
+          </el-form-item>
+          <div style="color: red;height:20px;font-size: 12px;text-align: left">
+            {{msg}}
+          </div>
+          <el-form-item style="margin: 10px 0;text-align: right">
+            <el-button type="primary" size="small" autocomplete="off" @click="submitCode" style="width: 100%;margin:25px 0px">SUBMIT</el-button>
+          </el-form-item>
+        </el-form>
+      </div>
+      <!--步骤2-->
+      <div v-else>
+        <el-form :model="modifyPass" ref="modifyPass" style=""  inline
+                 :rules="rule_modifyPass">
+
+          <div style="">
+            <el-form-item  prop="newPass" >
+            <el-input placeholder="Please enter the password" v-model="modifyPass.newPass" show-password></el-input>
+            </el-form-item>
+
+            <el-form-item  prop="confirmPass">
+              <el-input placeholder="Please enter the password again" v-model="modifyPass.confirmPass" show-password></el-input>
+            </el-form-item>
+          </div>
+
+          <div>
+            <el-button type="primary" @click="updateInfo('modifyPass')">SUBMIT</el-button>
+          </div>
+        </el-form>
+      </div>
+
+
+
+    </el-dialog>
+
+
 
 
   </div>
@@ -158,7 +223,7 @@
 
 <script>
 import register from "../components/common/register.vue";
-import {CheckCompany, CheckRegister, Login, Register} from "@/api/request";
+import {CheckCompany, CheckRegister, Login, modifyPass, Register, sendSms} from "@/api/request";
 import validCode from "@/components/common/ValidCode.vue";
 
 export default {
@@ -178,17 +243,15 @@ export default {
         callback();
       }
     };
-
     const validatePass=(rule, value, callback)=>{
       if (value === '') {
         callback(new Error('Please enter your password'));
-      } else if (value!==this.newUser.password){
+      } else if (value!==this.newUser.password&&value!==this.modifyPass.newPass){
         callback(new Error('Two passwords do not match'))
       }else{
         callback();
       }
     }
-
     const validateUsername=(rule, value, callback)=>{
         // const flag=CheckRegister(value)
         CheckRegister(value).then(rep=>{
@@ -200,8 +263,6 @@ export default {
         }
       })
     }
-
-
     const validateCompany=(rule, value, callback)=>{
         // const flag=CheckRegister(value)
         CheckCompany(value).then(rep=>{
@@ -215,9 +276,19 @@ export default {
     }
 
     return {
+      validatePhone:{
+        phone:'',
+        code:''
+      },
+      rightCode:'',
 
       loginUser:sessionStorage.getItem('user')?JSON.parse(sessionStorage.getItem('user')):{},
-
+      /*修改密码*/
+      modifyPass:{
+        newPass:'',
+        confirmPass:''
+      },
+      /*注册用户*/
       newUser:{
         username:'',
         password:'',
@@ -256,17 +327,31 @@ export default {
                           {required:true,message:'The new password cannot be empty',trigger:'blur'}],
         // confirmPassword: [{required:true,message:'新密码不能为空',trigger:'blur'}],
         name: [{required:true,message:'The name cannot be empty',trigger:'blur'}],
-        phone:[{required:true,message:'The phone cannot be empty',trigger:'blur'}],
-        email: [{required:true,message:'The e-mail cannot be empty',trigger:'blur'}],
+        phone:[{required:true,message:'The phone cannot be empty',trigger:'blur'},
+                {required:true,message:'The format of phone number is incorrect',trigger:'blur',pattern:/^1[3456789]\d{9}$/}],
+        email: [{required:true,message:'The e-mail cannot be empty',trigger:'blur',},
+                {required:true,message:'The format of e-mail is incorrect',trigger:'blur',pattern:/^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(\.[a-zA-Z0-9_-])+/}],
         identity: [{required:true,message:'The identity cannot be empty',trigger:'blur'}],
         company:[{required:true,message:'The company cannot be empty',trigger:'blur'},
                  {validator:validateCompany,trigger: 'blur'}],
       },
+
+      rule_retrieve:{
+        phone:[{required:true,message:'The phone cannot be empty',trigger:'blur'},
+               {required:true,message:'The format of phone number is incorrect',trigger:'blur',pattern:/^1[3456789]\d{9}$/}],},
+
+      rule_modifyPass:{
+        newPass:[{required:true,message:'The password cannot be empty',trigger:'blur'}],
+        confirmPass: [{validator:validatePass,trigger:'blur'},
+          {required:true,message:'The new password cannot be empty',trigger:'blur'}],
+      },
+
       msg:'',
 
       //登录和注册弹窗
       dialogVisible_register:false,
       dialogVisible_login:false,
+      dialogVisible_retrieve:false,
       value: '',
 
       //是否显示登录页面
@@ -277,6 +362,10 @@ export default {
 
       //输入密码错误次数
       count:0,
+
+      active:0,
+
+      userId:'',
 
     };
   },
@@ -327,6 +416,18 @@ export default {
       });
     },
 
+    updateInfo(formName){
+      this.$refs[formName].validate((valid) => {
+        if(valid) {
+          modifyPass({userId:this.userId,newPass:this.modifyPass.confirmPass}).then(rsp=>{
+            if(rsp.data.data===1){
+              this.$message.success("Modify successfully,Please log in!")
+              this.handleClose_retrieve();
+            }
+          })
+        }
+      })
+    },
     getCode(code){
       console.log(code)
       this.code=code.toLowerCase()
@@ -353,6 +454,7 @@ export default {
         }
       }
     },
+
     handleClose(){
       this.user={};
       this.dialogVisible_login=false;
@@ -362,14 +464,56 @@ export default {
         this.$refs['userLoginForm'].clearValidate();
       })
     },
+
     handleClose_register(){
-      this.newUser={};
+      this.newUser.username='';
+      this.newUser.password='';
+      this.newUser.confirmPassword='';
+      this.newUser.name='';
+      this.newUser.phone='';
+      this.newUser.email='';
+      if(this.newUser.identity==1){
+        this.newUser.company='';
+      }
       this.newUser.identity=0;
+
       this.dialogVisible_register=false
       //clear验证信息
       this.$nextTick(() => {
         this.$refs['newUser'].clearValidate();
       })
+    },
+
+    handleClose_retrieve(){
+      // this.newUser={};
+      // this.newUser.identity=0;
+      this.msg='';
+      this.dialogVisible_retrieve=false;
+      this.validatePhone={};
+      this.modifyPass={};
+      this.active=0;
+      //clear验证信息
+      this.$nextTick(() => {
+        this.$refs['validatePhone'].clearValidate();
+      })
+    },
+
+    sendSms(){
+      let phone=this.validatePhone.phone
+      sendSms(phone).then(rsp=>{
+          console.log(rsp.data)
+          this.rightCode=rsp.data.data.code
+          this.userId=rsp.data.data.userId;
+          this.$message.success("Send successfully")
+      })
+    },
+
+    submitCode(){
+      if(this.rightCode!=null&&this.rightCode!=''&&this.validatePhone.code===this.rightCode){
+        this.active++;
+      }else{
+        this.msg="Validation code is wrong!"
+      }
     },
 
     logout(){
@@ -379,6 +523,7 @@ export default {
       //刷新页面
       this.$router.go(0);
     }
+
   }
 }
 </script>

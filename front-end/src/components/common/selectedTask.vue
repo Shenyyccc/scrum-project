@@ -78,4 +78,8 @@ export default {
 .box-card {
   width: 300px;
 }
+
+.el-statistic {
+  display: flex;
+}
 </style>

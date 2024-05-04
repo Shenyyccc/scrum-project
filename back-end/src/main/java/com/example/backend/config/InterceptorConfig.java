@@ -13,7 +13,7 @@ public class InterceptorConfig implements WebMvcConfigurer {
     public void addInterceptors(InterceptorRegistry registry ) {
         registry.addInterceptor(jwtInterceptor())   //配置jwt拦截器规则
                 .addPathPatterns("/**")   //拦截所有请求路径
-                .excludePathPatterns("/login","/checkUsername","/register","/files/**","/checkCompany");
+                .excludePathPatterns("/login","/checkUsername","/register","/files/**","/modifyPass","/sendSms","/checkCompany");
     }
 
     @Bean

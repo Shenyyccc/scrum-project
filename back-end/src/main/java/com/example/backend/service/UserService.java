@@ -2,6 +2,7 @@ package com.example.backend.service;
 
 import cn.hutool.core.bean.BeanUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.example.backend.Exception.LoginException;
 import com.example.backend.mapper.CompanyMapper;
 import com.example.backend.mapper.UserMapper;
 import com.example.backend.pojo.Company;
@@ -26,13 +27,13 @@ public class UserService {
         QueryWrapper<User> queryWrapper=new QueryWrapper<>();
         queryWrapper.eq("username",user.getUsername());
         User one;
-        try{
-            one = userMapper.selectOne(queryWrapper); //从数据库查询用户信息
-        }catch (Exception e){
-            throw new Exception("The username or password is incorrect");
-        }
+        one = userMapper.selectOne(queryWrapper); //从数据库查询用户信息
+       if(one==null){
+           throw new LoginException("The username or password is incorrect");
+       }
+
         if(!user.getPassword().equals(one.getPassword())){
-            throw new Exception("The username or password is incorrect");
+            throw new LoginException("The username or password is incorrect");
         }
 
         UserDTO userDTO = new UserDTO();

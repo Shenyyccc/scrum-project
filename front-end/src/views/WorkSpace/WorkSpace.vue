@@ -22,21 +22,23 @@
       <!-- 左侧 -->
       <el-aside width="200px">
         <el-menu
+          router
+          :default-active="$route.path"
           style="overflow-x: hidden;height: 100%"
           class="el-menu-vertical-demo"
           @open=""
           @close=""
-          @select="handleSelect"
+          @select=""
           background-color="#373D41"
           text-color="#fff"
           active-text-color="#ffd04b">
 
-            <el-menu-item index="1">
+            <el-menu-item index="/WorkSpace/WorkPickup">
               <i class="el-icon-menu"></i>
               <span>Task Pickup</span>
             </el-menu-item>
 
-            <el-menu-item index="2">
+            <el-menu-item index="/WorkSpace/Panel">
               <i class="el-icon-odometer"></i>
               <span>Panel</span>
 
@@ -104,7 +106,7 @@
 
 export default{
   name:'WorkSpace',
-
+  props:["admin"],
   data(){
     return{
       loginUser:JSON.parse(sessionStorage.getItem('user')),
@@ -117,28 +119,8 @@ export default{
       //  将登录页面转入到登录界面
       this.$router.push('/')
     },
-    handleSelect(index) {
-      switch(index) {
-        case '1':
-          this.$router.push('/WorkSpace/WorkPickup');
-          break;
-        case '2':
-          this.$router.push('/WorkSpace/Panel');
-          break;
-        case '3':
-          this.$router.push('/Backstage/PersonInformation');
-          break
-        case '4':
-          this.$router.push('/Backstage/WorkflowTemplate')
-          break
-        default:
-          console.warn('Unknown index');
-      }
-
-    }
   },
   mounted() {
-      // this.handleSelect("1");
   }
 }
 </script>

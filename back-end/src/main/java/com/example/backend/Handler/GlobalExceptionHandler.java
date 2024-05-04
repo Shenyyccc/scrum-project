@@ -26,13 +26,13 @@ public class GlobalExceptionHandler {
     }
 
 
-//    @ExceptionHandler(LoginException.class)
-//    @ResponseBody
-//    public Result handleLoginException(JwtAuthenticationException e) {
-//
-//        // 返回一个401未授权的响应
-//        return Result.error(e.getMessage(),"401");
-//    }
+    @ExceptionHandler(LoginException.class)
+    @ResponseBody
+    public Result handleLoginException(JwtAuthenticationException e) {
 
-    // 可以继续定义其他异常的处理方法
+        // 返回一个401未授权的响应
+        return Result.error(e.getMessage(),"401");
+    }
+
+//     可以继续定义其他异常的处理方法......
 }

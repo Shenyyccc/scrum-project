@@ -260,12 +260,12 @@ export function getUserById(params){
     url:"/getUserById",
     method:'get',
     params: {
-      companyid:params.companyid,
-      departmentid:params.departmentid,
-      expiretime:params.expiretime,
-      id:params.id,
-      taskname:params.taskname,
-      taskscrib:params.taskscrib
+      // companyid:params.companyid,
+      // departmentid:params.departmentid,
+      // expiretime:params.expiretime,
+      userId:params,
+      // taskname:params.taskname,
+      // taskscrib:params.taskscrib
     }
   })
 }
@@ -275,6 +275,14 @@ export function updateUser(params){
     url:"/updateUser",
     method:'post',
     params:params,
+  })
+}
+
+export function updatePass(params){
+  return request({
+    url:"/updatePass",
+    method:'post',
+    data:params,
   })
 }
 
@@ -353,7 +361,7 @@ export function pickUpTask(params){
 
 export function getRunningTask(params){
   return request({
-    url:'getRunningTask',
+    url:'/getRunningTask',
     method:'get',
     params:{
       userid:params
@@ -363,10 +371,29 @@ export function getRunningTask(params){
 
 export function finishTask(params){
   return request({
-    url:'finishTask',
+    url:'/finishTask',
     method:'get',
     params:{
       id:params
     }
   })
 }
+
+export function sendSms(params){
+  return request({
+    url:'/sendSms',
+    method:'get',
+    params: {
+      phone:params
+    }
+  })
+}
+
+export function modifyPass(params){
+  return request({
+    url:'/modifyPass',
+    method:'post',
+    data:params
+  })
+}
+
