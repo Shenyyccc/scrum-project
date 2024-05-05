@@ -20,7 +20,7 @@ const router=new Router({
         {path:'/WorkSpace/WorkList',component:()=>import('../components/Work/WorkList.vue')},
         {path:'/WorkSpace/Panel',component:()=>import('@/components/Work/Panel.vue')},
         {path:'/WorkSpace/WorkPickup',component:()=>import('@/components/Work/WorkPickup.vue')},
-        {path:'/WorkSpace/PersonInformation',component:()=>import('@/components/Work/PersonInformation.vue')},
+        {path:'/WorkSpace/PersonInformation',component:()=>import('@/components/common/PersonInformation.vue')},
         {path: '/WorkSpace/ModifyPass',component:()=>import('@/components/common/ModifyPass.vue')},
       ]
 
@@ -34,11 +34,12 @@ const router=new Router({
         {path:'/Backstage/CreateDepartment',component:()=>import('@/components/BackStage/CreateDepartment.vue')},
         {path:'/Backstage/FormDesign', component:()=>import('@/components/BackStage/FormDesign.vue')},
         {path:'/Backstage/FormDesign/CreateTask', component:()=>import('@/components/BackStage/CreatTaskTemplate.vue')},
-        {path:'/Backstage/PersonInformation',component:()=>import('@/components/BackStage/PersonInformation.vue')},
+        {path:'/Backstage/PersonInformation',component:()=>import('@/components/common/PersonInformation.vue')},
         {path:'/Backstage/FormDesign/CreateDefinition', component:()=>import('@/components/BackStage/CreateDefinition.vue')},
         {path:'/Backstage/WorkflowTemplate', component:()=>import('@/components/BackStage/WorkflowTemplate.vue')},
         {path:'/Backstage/ModifyPass',component:()=>import('@/components/common/ModifyPass.vue')},
-        {path:'/Backstage/WorkflowGraph',component:()=>import('@/components/BackStage/taskflowGraph.vue')}
+        {path:'/Backstage/WorkflowGraph',component:()=>import('@/components/BackStage/taskflowGraph.vue')},
+        {path:'/Backstage/RunningTaskflow',component:()=>import('@/components/BackStage/RunningTaskflow.vue')}
       ],
     },
     //403表示无权访问

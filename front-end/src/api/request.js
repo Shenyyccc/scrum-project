@@ -397,3 +397,27 @@ export function modifyPass(params){
   })
 }
 
+export function getRunningTaskByWorkflowId(param){
+  return request({
+    url:'/getRunningTaskByWorkflowId',
+    method:'get',
+    params:{
+      workflowId:param
+    }
+  })
+}
+
+
+export function getRunningWorkflow(params){
+  return request({
+    url:'/getRunningWorkflow',
+    method:'get',
+    params:{
+      search:params.search,
+      pageSize:params.pageSize,
+      pageNum:params.pageNum,
+      companyid:params.companyid
+    }
+  })
+}
+

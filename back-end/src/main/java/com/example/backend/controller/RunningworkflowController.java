@@ -14,6 +14,7 @@ import com.example.backend.mapper.RunningtaskMapper;
 import com.example.backend.mapper.RunningworkflowMapper;
 import com.example.backend.pojo.*;
 import com.example.backend.pojo.DTO.PageParams;
+import com.example.backend.pojo.DTO.RunningWorkflowDTO;
 import com.example.backend.service.PaginationService;
 import com.example.backend.utils.UUIDutils;
 import com.github.pagehelper.Page;
@@ -25,9 +26,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 @RestController
 public class RunningworkflowController {
@@ -150,6 +149,14 @@ public class RunningworkflowController {
         return Result.success(list);
     }
 
+    @GetMapping("/getRunningTaskByWorkflowId")
+    public Result getRunningTaskByWorkflowId(String workflowId){
+        QueryWrapper<Runningtask> queryWrapper=new QueryWrapper<>();
+        queryWrapper.eq("runningworkflowid",workflowId);
+        List<Runningtask> list = runningtaskMapper.selectList(queryWrapper);
+        return Result.success(list);
+    }
+
     @GetMapping("/finishTask")
     public Result finishTask(String id){
         Runningtask task = runningtaskMapper.selectById(id);
@@ -158,6 +165,43 @@ public class RunningworkflowController {
         }
         task.setProgress(Progress.Finished);
         return Result.success(runningtaskMapper.updateById(task));
+    }
+
+    @GetMapping("/getRunningWorkflow")
+    public Result getRunningWorkflow(String search,Integer pageSize, Integer pageNum,String companyid){
+        List<RunningWorkflowDTO> data=new ArrayList<>();
+        QueryWrapper<Runningworkflow> queryWrapper=new QueryWrapper<>();
+        queryWrapper.eq("companyid",companyid);
+        queryWrapper.like("name",search);
+        PageHelper.startPage(pageNum,pageSize);
+        List<Runningworkflow> workflows = workflowMapper.selectList(queryWrapper);
+        PageInfo<Runningworkflow> of=PageInfo.of(workflows);
+
+        for(Runningworkflow workflow:workflows){
+            QueryWrapper<Runningtask> wrapper=new QueryWrapper<>();
+            wrapper.eq("runningworkflowid",workflow.getId());
+            List<Runningtask> runningtasks = runningtaskMapper.selectList(wrapper);
+            Boolean flag=true;
+            for(Runningtask task:runningtasks){
+                if(task.getProgress()!=Progress.Finished){
+                    flag=false;
+                    break;
+                }
+            }
+            RunningWorkflowDTO dto=new RunningWorkflowDTO();
+            BeanUtil.copyProperties(workflow,dto);
+            if(flag){
+                dto.setProgress("Finished");
+            }else {
+                dto.setProgress("in Progress");
+            }
+            data.add(dto);
+        }
+        Map<String,Object> map=new HashMap<>();
+        map.put("data",data);
+        map.put("total",of.getTotal());
+
+        return Result.success(map);
     }
 
 

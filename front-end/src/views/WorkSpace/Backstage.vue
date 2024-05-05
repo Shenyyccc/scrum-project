@@ -56,18 +56,18 @@
           </el-menu-item>
 
           <el-menu-item index="/Backstage/WorkflowTemplate">
-            <i class="el-icon-document"></i>
+            <i class="el-icon-video-play"></i>
             <span>Workflow Template</span>
+          </el-menu-item>
+
+          <el-menu-item index="/Backstage/RunningTaskflow">
+            <i class="el-icon-document"></i>
+            <span>Running Workflow</span>
           </el-menu-item>
 
           <el-menu-item index="/Backstage/PersonInformation">
             <i class="el-icon-user"></i>
             <span>Person Information</span>
-          </el-menu-item>
-
-          <el-menu-item index="/Backstage/workflowGraph">
-            <i class="el-icon-user"></i>
-            <span>workflowGraph</span>
           </el-menu-item>
 
         </el-menu>
