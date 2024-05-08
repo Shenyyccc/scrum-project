@@ -65,6 +65,13 @@
             <span>Running Workflow</span>
           </el-menu-item>
 
+          <el-menu-item index="/Backstage/UnfinishedTask">
+            <i class="el-icon-message-solid"></i>
+            <span>Unfinished Task</span>
+            &nbsp;
+            <el-badge class="mark" :value="unfinishedNum" />
+          </el-menu-item>
+
           <el-menu-item index="/Backstage/PersonInformation">
             <i class="el-icon-user"></i>
             <span>Person Information</span>
@@ -75,7 +82,7 @@
 
       </el-aside>
       <!-- 主体 -->
-      <el-main> <router-view @updateInfo="updateUser"/> </el-main>
+      <el-main> <router-view @updateInfo="updateUser" @num="getUnfinishedTaskNum"/> </el-main>
     </el-container>
 
 
@@ -84,12 +91,23 @@
 
 <script >
 
+import {getUnfinishedTask} from "@/api/request";
+
 export default{
   name:'Backstage',
 
   data(){
     return{
       loginUser:JSON.parse(sessionStorage.getItem('user')),
+      unfinishedNum:0,
+      input:{
+        name:'',
+        scrib:'',
+        prio:'',
+        time:'',
+        pageSize:9,
+        pageNum:1,
+      },
     }
   },
 
@@ -97,14 +115,34 @@ export default{
     updateUser(param){
       console.log(param)
       this.loginUser=JSON.parse(JSON.stringify(param))
+    }
+    ,
+    getUnfinishedTask(){
+      this.input.companyid=this.loginUser.companyid
+      if(this.loginUser.departmentid===null){
+        this.input.departmentid='';
+      }else {
+        this.input.departmentid=this.loginUser.departmentid
+      }
+      getUnfinishedTask(this.input).then(rsp=>{
+        console.log(rsp.data.data)
+        this.unfinishedNum=rsp.data.data.total
+      })
     },
-
-
+    //获取UnfinishedTask的任务数量
+    getUnfinishedTaskNum(param){
+      console.log("=======>user",param)
+      this.unfinishedNum=param
+    },
     // 退出操作
     logout(){
       this.$router.push('/')
     },
   },
+  mounted() {
+
+    this.getUnfinishedTask()
+  }
 
 }
 </script>

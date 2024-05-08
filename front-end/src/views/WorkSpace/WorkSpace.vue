@@ -49,6 +49,11 @@
           text-color="#fff"
           active-text-color="#ffd04b">
 
+          <el-menu-item index="/WorkSpace/Calendar">
+            <i class="el-icon-menu"></i>
+            <span>Calendar</span>
+          </el-menu-item>
+
             <el-menu-item index="/WorkSpace/WorkPickup">
               <i class="el-icon-menu"></i>
               <span>Task Pickup</span>
@@ -64,10 +69,9 @@
 
 
 
-
       </el-aside>
       <!-- 主体 -->
-      <el-main> <router-view/> </el-main>
+      <el-main> <router-view @updateInfo="updateUser"/> </el-main>
     </el-container>
 
 
@@ -90,6 +94,10 @@ export default{
     logout(){
       //  将登录页面转入到登录界面
       this.$router.push('/')
+    },
+    updateUser(param){
+      console.log(param)
+      this.loginUser=JSON.parse(JSON.stringify(param))
     },
   },
   mounted() {
@@ -135,6 +143,10 @@ export default{
 
 .el-main{
   background-color: #EAEDF1;
+}
+
+.el-card__body, .el-main{
+  padding: 0 0;
 }
 
 

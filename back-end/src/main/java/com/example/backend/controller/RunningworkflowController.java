@@ -76,10 +76,14 @@ public class RunningworkflowController {
 
     @GetMapping("/getDepartTask")
     public Result getDepartTask(@RequestParam("name")String name, @RequestParam("scrib")String scrib, @RequestParam("time")String time,
-                                @RequestParam("departmentid")String deparatmentid,@RequestParam("pageSize")Integer pageSize, @RequestParam("pageNum")Integer pageNum){
+                                @RequestParam("departmentid")String departmentid,@RequestParam("pageSize")Integer pageSize,
+                                @RequestParam("pageNum")Integer pageNum,@RequestParam("companyId")String companyId){
         //1.查询某部门的未领取任务
         QueryWrapper<Runningtask> queryWrapper=new QueryWrapper<>();
-        queryWrapper.eq("departmentid",deparatmentid);
+        queryWrapper.eq("companyid",companyId);
+        if(StrUtil.isNotEmpty(departmentid)){
+            queryWrapper.eq("departmentid",departmentid);
+        }
         queryWrapper.and(wapper->wapper.isNull("userid").or().eq("userid",""));
 
         queryWrapper.eq("progress",0);

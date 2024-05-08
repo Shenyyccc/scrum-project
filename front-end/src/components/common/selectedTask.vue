@@ -3,7 +3,7 @@
       <el-card class="box-card">
         <div class="clearfix" style="display: flex;line-height: 20px;">
           <span style="font-size: 20px;flex: 1" >
-            <slot name="task_name" ></slot>
+            <slot name="task_name" ref="taskName"></slot>
           </span>
           <span style="margin-left: 40px;flex: 1">
             <el-button style="float: right; padding: 3px 0" type="text" @click="finish">Finish</el-button>
@@ -31,9 +31,11 @@
 </template>
 
 <script>
+import {unfinishedTask} from "@/api/request";
+
 export default {
   name: "selectedTask",
-  props:["deadline","id"],
+  props:["deadline","id","taskName"],
   data(){
     return{
 
@@ -44,13 +46,22 @@ export default {
       console.log(this.deadline)
       this.$notify({
         title: "Tip",
-        message: "Time over!",
+        message: "Time over! You dont finish "+this.taskName+"  in time....",
         duration: 0,
+        type:"warning"
       });
+      this.changeProgress()
+      //因为Progress发生变化，需要重新获取progress
+      this.$emit("unfinishedTask")
     },
     finish(){
       console.log(this.id)
       this.$emit("finishTask",this.id);
+    },
+    changeProgress(){
+        unfinishedTask(this.id).then(rsp=>{
+          console.log("changeProgress",rsp.data.data)
+        })
     }
   }
 

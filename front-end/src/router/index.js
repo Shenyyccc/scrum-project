@@ -22,6 +22,7 @@ const router=new Router({
         {path:'/WorkSpace/WorkPickup',component:()=>import('@/components/Work/WorkPickup.vue')},
         {path:'/WorkSpace/PersonInformation',component:()=>import('@/components/common/PersonInformation.vue')},
         {path: '/WorkSpace/ModifyPass',component:()=>import('@/components/common/ModifyPass.vue')},
+        {path: '/WorkSpace/Calendar',component:()=>import('@/components/Work/Calendar.vue')},
       ]
 
     },
@@ -39,7 +40,8 @@ const router=new Router({
         {path:'/Backstage/WorkflowTemplate', component:()=>import('@/components/BackStage/WorkflowTemplate.vue')},
         {path:'/Backstage/ModifyPass',component:()=>import('@/components/common/ModifyPass.vue')},
         {path:'/Backstage/WorkflowGraph',component:()=>import('@/components/BackStage/taskflowGraph.vue')},
-        {path:'/Backstage/RunningTaskflow',component:()=>import('@/components/BackStage/RunningTaskflow.vue')}
+        {path:'/Backstage/RunningTaskflow',component:()=>import('@/components/BackStage/RunningTaskflow.vue')},
+        {path:'/Backstage/unfinishedTask',component:()=>import('@/components/BackStage/UnfinishedTask.vue')},
       ],
     },
     //403表示无权访问

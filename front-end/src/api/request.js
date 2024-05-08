@@ -192,6 +192,7 @@ export function getTasks(params){
       departmentid:params.departmentid,
       pageSize:params.pageSize,
       pageNum:params.pageNum,
+      companyId:params.companyid
     },
   })
 }
@@ -417,6 +418,32 @@ export function getRunningWorkflow(params){
       pageSize:params.pageSize,
       pageNum:params.pageNum,
       companyid:params.companyid
+    }
+  })
+}
+
+export function unfinishedTask(param){
+  return request({
+    url:'/templateTask/unfinishedTask',
+    method:'get',
+    params:{
+      taskId:param
+    }
+  })
+}
+
+export function getUnfinishedTask(params){
+  return request({
+    url:'/templateTask/getUnfinishedTask',
+    method:'get',
+    params:{
+      name:params.name,
+      scrib:params.scrib,
+      time:params.time,
+      departmentid:params.departmentid,
+      pageSize:params.pageSize,
+      pageNum:params.pageNum,
+      companyId:params.companyid
     }
   })
 }

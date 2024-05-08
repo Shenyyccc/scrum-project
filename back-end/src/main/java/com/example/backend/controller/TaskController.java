@@ -1,19 +1,21 @@
 package com.example.backend.controller;
 
 import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.example.backend.Constants.Progress;
 import com.example.backend.common.Result;
 import com.example.backend.mapper.DepartmentMapper;
+import com.example.backend.mapper.RunningtaskMapper;
 import com.example.backend.mapper.TasktemplateMapper;
 import com.example.backend.mapper.UserMapper;
+import com.example.backend.pojo.*;
 import com.example.backend.pojo.DTO.DepartmentDTO;
 import com.example.backend.pojo.DTO.DepartmentTaskDTO;
-import com.example.backend.pojo.Department;
-import com.example.backend.pojo.Tasktemplate;
-import com.example.backend.pojo.User;
 import com.example.backend.utils.UUIDutils;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import liquibase.pro.packaged.R;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -32,6 +34,9 @@ public class TaskController {
 
     @Autowired
     UserMapper userMapper;
+
+    @Autowired
+    RunningtaskMapper runningtaskMapper;
 
     @GetMapping("/create")
     public Result createTaskTemplate(Tasktemplate tasktemplate){
@@ -95,4 +100,35 @@ public class TaskController {
         return Result.success(tasktemplateMapper.updateById(tasktemplate));
     }
 
+    @GetMapping("/unfinishedTask")
+    public Result unfinishedTask(String taskId){
+        Runningtask task = runningtaskMapper.selectById(taskId);
+        task.setProgress(Progress.unFinished);
+        return Result.success(runningtaskMapper.updateById(task));
+    }
+
+    @GetMapping("/getUnfinishedTask")
+    public Result getUnfinishedTask(@RequestParam("name")String name, @RequestParam("scrib")String scrib, @RequestParam("time")String time,
+                                    @RequestParam("departmentid")String departmentid,@RequestParam("pageSize")Integer pageSize,
+                                    @RequestParam("pageNum")Integer pageNum,@RequestParam("companyId")String companyId){
+        QueryWrapper<Runningtask> wrapper=new QueryWrapper<>();
+        wrapper.eq("companyid",companyId);
+        if(StrUtil.isNotEmpty(departmentid)){
+            wrapper.eq("departmentid",departmentid);
+        }
+        if(StrUtil.isNotEmpty(name)){
+            wrapper.like("name",name);
+        }
+        if(StrUtil.isNotEmpty(scrib)){
+            wrapper.like("taskscrib",scrib);
+        }
+        if(StrUtil.isNotEmpty(time)){
+            wrapper.eq("expiretime",time);
+        }
+        wrapper.eq("progress",Progress.unFinished);
+        PageHelper.startPage(pageNum,pageSize);
+        List<Runningtask> list = runningtaskMapper.selectList(wrapper);
+        PageInfo<Runningtask> of=PageInfo.of(list);
+        return Result.success(of);
+    }
 }

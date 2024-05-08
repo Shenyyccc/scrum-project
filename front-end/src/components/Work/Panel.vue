@@ -2,12 +2,19 @@
   <div>
     <div style="text-align: center;font-size: 20px">
       <h1 style="align-content: center">Panel</h1>
-
+      <el-divider></el-divider>
     </div>
-    <div class="container">
+
+    <div v-if="groupedData.length===0" style="text-align: center">
+      <div style="display: block">
+        <el-empty description="You need to go to Task Pickup to pick up task....." ></el-empty>
+      </div>
+    </div>
+    <div class="container" v-else>
       <div style="">
         <div v-for="(group,index) in groupedData" :key="index" style="display: flex;height: 160px;margin-left: 5px">
-            <selected-task v-for="(task,index) in group" :key="index" :deadline="task.deadline"  style="margin-left: 10px" :id="task.id"  @finishTask="finish" >
+            <selected-task v-for="(task,index) in group" :key="index" :deadline="task.deadline"  style="margin-left: 10px" :id="task.id"
+                           :task-name="task.taskname" @finishTask="finish" @unfinishedTask="getRuningTask">
               <div slot="task_name">
                 {{task.taskname}}
               </div>
@@ -17,55 +24,6 @@
             </selected-task>
         </div>
       </div>
-
-
-      <!--    <div>{{drag?'拖拽中':'拖拽停止'}}</div>-->
-<!--      <div class="draggable-container">-->
-<!--        <h1 >未开始</h1>-->
-<!--        &lt;!&ndash;使用draggable组件&ndash;&gt;-->
-<!--        <draggable id="1" v-model="myArray"  chosenClass="chosen" forceFallback="true" group="people"-->
-<!--                   animation="300" @start="onStart" @end="onEnd"  :scroll="true" >-->
-<!--&lt;!&ndash;          <transition-group>&ndash;&gt;-->
-<!--&lt;!&ndash;            <div :workId="element.id" class="item" v-for="element in myArray" :key="element.id" style="margin:10px;border-radius: 20px">{{element.workname}}</div>&ndash;&gt;-->
-<!--&lt;!&ndash;          <Work :workId="element.id" class="item" v-for="element in myArray" :key="element.id" style="">&ndash;&gt;-->
-<!--&lt;!&ndash;            <div slot="work_name">&ndash;&gt;-->
-<!--&lt;!&ndash;              {{element.workname}}&ndash;&gt;-->
-<!--&lt;!&ndash;            </div>&ndash;&gt;-->
-<!--&lt;!&ndash;            <div slot="work_content">&ndash;&gt;-->
-<!--&lt;!&ndash;              {{element.workprocess}}&ndash;&gt;-->
-<!--&lt;!&ndash;            </div>&ndash;&gt;-->
-<!--&lt;!&ndash;          </Work>&ndash;&gt;-->
-<!--&lt;!&ndash;          </transition-group>&ndash;&gt;-->
-<!--          <selected-task v-for="element in Array" :key="element.id" :deadline="deadline">-->
-<!--            <div slot="task_name">-->
-<!--              {{element.taskname}}-->
-<!--            </div>-->
-<!--&lt;!&ndash;            <div slot="task_scrib">&ndash;&gt;-->
-<!--&lt;!&ndash;              {{element.taskscrib}}&ndash;&gt;-->
-<!--&lt;!&ndash;            </div>&ndash;&gt;-->
-<!--          </selected-task>-->
-<!--        </draggable>-->
-<!--      </div>-->
-
-<!--      <div class="draggable-container" >-->
-<!--        <h1>进行中</h1>-->
-<!--        <draggable id='2' v-model="myArray1"  chosenClass="chosen" forceFallback="true" group="people"-->
-<!--                   animation="300" @start="onStart" @end="onEnd" >-->
-<!--&lt;!&ndash;          <transition-group>&ndash;&gt;-->
-<!--            <div :workId="element.id" class="item" v-for="element in myArray1" :key="element.id" style="margin: 10px;border-radius: 20px">{{element.workname}}</div>-->
-<!--&lt;!&ndash;          </transition-group>&ndash;&gt;-->
-<!--        </draggable>-->
-<!--      </div>-->
-
-<!--      <div class="draggable-container">-->
-<!--        <h1>已完成</h1>-->
-<!--        <draggable id='3' v-model="myArray2"  chosenClass="chosen" forceFallback="true" group="people"-->
-<!--                   animation="300" @start="onStart" @end="onEnd" >-->
-<!--&lt;!&ndash;          <transition-group>&ndash;&gt;-->
-<!--            <div :workId="element.id" class="item" v-for="element in myArray2" :key="element.id" style="margin:10px;border-radius: 20px">{{element.workname}}</div>-->
-<!--&lt;!&ndash;          </transition-group>&ndash;&gt;-->
-<!--        </draggable>-->
-<!--      </div>-->
     </div>
 
   </div>
@@ -109,9 +67,6 @@ export default {
     },
   },
   mounted() {
-    // this.GetUnstart();
-    // this.GetStarting();
-    // this.GetFinished();
     this.getRuningTask();
 
   },
@@ -120,7 +75,8 @@ export default {
       getRunningTask(JSON.parse(sessionStorage.getItem("user")).userId).then(rsp=>{
         this.Task=rsp.data.data;
         for(let i=0;i<this.Task.length;i++){
-          this.Task[i].deadline= Date.now() + (new Date(this.Task[i].endtime)- Date.now())
+          // this.Task[i].deadline= Date.now() + (new Date(this.Task[i].endtime)- Date.now())
+          this.Task[i].deadline= new Date(this.Task[i].endtime)
         }
         console.log(this.Task)
       })
@@ -133,29 +89,6 @@ export default {
       })
     },
 
-    //获取数组
-    GetUnstart(){
-      getUnstart().then(rsp=>{
-        console.log(rsp.data)
-        this.myArray=rsp.data
-      }).catch(err=> this.$message.error('获取Unstarted异常'))
-
-    },
-    GetStarting(){
-      getStarting().then(rsp=>{
-        this.myArray1=rsp.data
-      }).catch(err=> this.$message.error('获取Starting异常'))
-    },
-    GetFinished(){
-      getFinished().then(rsp=>{
-        this.myArray2=rsp.data
-      }).catch(err=> this.$message.error('获取Finished异常'))
-    },
-
-    //开始拖拽事件
-    onStart(evt){
-      this.drag=true;
-    },
     //拖拽结束事件
     onEnd(evt) {
 
