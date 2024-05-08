@@ -1,6 +1,7 @@
 package com.example.backend.service;
 
 import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.example.backend.Exception.LoginException;
 import com.example.backend.mapper.CompanyMapper;
@@ -47,9 +48,8 @@ public class UserService {
             userDTO.setUserId(one.getId());
             userDTO.setUsername(one.getUsername());
             userDTO.setCompanyid(one.getCompanyid());
-            userDTO.setCompany(companyMapper.selectById(one.getCompanyid()).getName());
             userDTO.setDepartmentid(one.getDepartmentid());
-            if(one.getCompanyid()!=null){
+            if(StrUtil.isNotEmpty(one.getCompanyid())){
                 Company company = companyMapper.selectById(one.getCompanyid());
                 userDTO.setCompany(company.getName());
             }

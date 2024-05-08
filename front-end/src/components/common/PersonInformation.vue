@@ -23,8 +23,8 @@
               </el-upload>
             </el-form-item>
 
-            <div style="">
-              <el-form-item label="Username:" prop="username" style="margin-right: 10px">
+            <div >
+              <el-form-item label="Username:" prop="username" style="margin-right: 10px;">
                 <el-input v-model="userInform.username" :disabled="true"></el-input>
               </el-form-item>
               <el-form-item label="Name:" prop="name"  style="margin-right: 10px">
@@ -36,7 +36,7 @@
             </div>
 
             <div>
-              <el-button type="primary" @click="reset">RESET</el-button>
+              <el-button type="primary" style="margin-left: 60px" @click="reset">RESET</el-button>
               <el-button type="primary" @click="updateInfo">SAVE</el-button>
             </div>
           </el-form>

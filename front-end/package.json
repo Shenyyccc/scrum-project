@@ -23,6 +23,7 @@
     "chromedriver": "^2.46",
     "el-tree-transfer": "^2.4.7",
     "element-ui": "^2.15.14",
+    "qs": "^6.12.1",
     "vue": "^2.5.2",
     "vue-i18n": "^9.11.0",
     "vue-router": "^3.0.1",

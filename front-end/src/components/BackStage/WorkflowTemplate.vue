@@ -8,7 +8,7 @@
       </div>
     </el-header>
 
-    <el-main style=";margin-bottom: 0px">
+    <el-main style="margin-bottom: 0px">
       <div style="">
         <el-table :data="definitionData" header-cell-class-name="headerBg" :header-cell-style="{background:'#eef1f6',color:'#606266'}"
                   selection-change="handleSelectionChange" empty-text="No Data"  style="width: 1000px;margin: 0 130px" height="467" align="center">

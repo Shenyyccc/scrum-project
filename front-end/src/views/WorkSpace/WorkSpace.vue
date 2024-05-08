@@ -1,5 +1,5 @@
 <template>
-  <el-container class="home-container">
+  <el-container class="home-container" >
 
     <!--头部  -->
     <el-header>
@@ -36,7 +36,7 @@
     <!-- 页面主体区  嵌套容器  包裹 Aside与Main -->
     <el-container>
       <!-- 左侧 -->
-      <el-aside width="200px">
+      <el-aside width="200px" >
         <el-menu
           router
           :default-active="$route.path"
@@ -67,7 +67,7 @@
 
       </el-aside>
       <!-- 主体 -->
-      <el-main> <router-view/> </el-main>
+      <el-main style="border-radius: 20px"> <router-view/> </el-main>
     </el-container>
 
 

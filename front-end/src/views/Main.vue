@@ -50,7 +50,7 @@
     <el-dialog
       title="LOG IN"
       :visible.sync="dialogVisible_login"
-      width="30%"
+      width="35%"
       :before-close="handleClose">
 
 <!--      v-model 主要用于处理表单元素的双向数据绑定，而 v-bind 用于动态地将属性与 Vue 数据绑定-->
@@ -73,22 +73,22 @@
           </div>
         </el-form-item>
         <div style="color: red">{{msg}}</div>
-        <el-form-item style="margin: 10px 0;text-align: right">
+        <el-form-item style="margin: 20px 0;text-align: right">
           <el-button type="primary" size="small" autocomplete="off" @click="onSubmit('userLoginForm')" style="width: 100%;margin-bottom: 10px">LOG IN</el-button>
         </el-form-item>
         <el-form-item style="margin-bottom: 20px;" >
           <div style="display: flex;">
-            <div style="flex:1">Don't have an account yet？</div>
+            <div style="flex:1" >                         </div>
 <!--            <div style="flex: 1;text-align: right"><span style="color: #0f9876;cursor: pointer">Lost Password</span></div>-->
-            <div style="color: #0f9876;cursor: pointer;margin-left: 18px;flex: 1" @click="dialogVisible_login=false;dialogVisible_register=true">
-              Click to register
+            <div style="color: #0f9876;cursor: pointer;margin-left: 50px;flex: 1" @click="dialogVisible_login=false;dialogVisible_register=true">
+              Click to Register
             </div>
           </div>
           <div style="margin-bottom: 10px;display: flex">
             <div style="flex: 1">
             </div>
             <div style="color: #0f9876;cursor: pointer;margin-left: 50px;margin-top:-15px;flex: 1" @click="dialogVisible_login=false;dialogVisible_retrieve=true">
-              Retrieve password
+              Forget Password
             </div>
           </div>
         </el-form-item>
